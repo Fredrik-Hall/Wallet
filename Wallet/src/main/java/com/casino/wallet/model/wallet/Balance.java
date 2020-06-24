@@ -1,11 +1,13 @@
-package Casino.Wallet.Model;
+package com.casino.wallet.model.wallet;
 
-public class BalanceResponse {
+import com.casino.wallet.model.ErrorCode;
+
+public class Balance {
 
     private ErrorCode errorCode;
     private Double amount;
 
-    public BalanceResponse(ErrorCode errorCode, Double amount) {
+    public Balance(ErrorCode errorCode, Double amount) {
         this.errorCode = errorCode;
         this.amount = amount;
     }

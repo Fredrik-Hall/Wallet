@@ -1,4 +1,4 @@
-package Casino.Wallet.Model;
+package com.casino.wallet.model;
 
 public enum ErrorCode {
     OK(0),

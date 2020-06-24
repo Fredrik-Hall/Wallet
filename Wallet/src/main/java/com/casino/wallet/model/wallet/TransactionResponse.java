@@ -1,4 +1,6 @@
-package Casino.Wallet.Model;
+package com.casino.wallet.model.wallet;
+
+import com.casino.wallet.model.ErrorCode;
 
 public class TransactionResponse {
 

@@ -1,4 +1,4 @@
-package Casino.Wallet.Swagger;
+package com.casino.wallet.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +20,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors
-                        .basePackage("Casino.Wallet"))
+                        .basePackage("com.casino.wallet"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(metaData());
@@ -28,8 +28,8 @@ public class SwaggerConfig {
     private ApiInfo metaData() {
         return new ApiInfo(
                  "Casino Wallet",
-                "A basic casino wallet",
-                "1.0",
+                "A basic com.casino wallet",
+                "v1",
                 null,
                 "Fredrik Hall",
                 null,
