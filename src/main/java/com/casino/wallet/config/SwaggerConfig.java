@@ -28,7 +28,7 @@ public class SwaggerConfig {
     private ApiInfo metaData() {
         return new ApiInfo(
                  "Casino Wallet",
-                "A basic com.casino wallet",
+                "A basic casino wallet, now hosted on heroku",
                 "v1",
                 null,
                 "Fredrik Hall",
