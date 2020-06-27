@@ -1,6 +1,6 @@
 package com.casino.wallet.repository;
 
-import com.casino.wallet.model.wallet.Transaction;
+import com.casino.wallet.model.Transaction.Transaction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

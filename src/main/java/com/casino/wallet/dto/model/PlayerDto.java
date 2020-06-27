@@ -1,16 +1,13 @@
-package com.casino.wallet.model.player;
+package com.casino.wallet.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
 import java.time.Instant;
 
 @Setter
@@ -20,12 +17,8 @@ import java.time.Instant;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Entity
-@Table (name = "Players")
-public class Player {
+public class PlayerDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String firstName;
@@ -34,6 +27,5 @@ public class Player {
 
     private String email;
 
-    private Instant created = Instant.now();
-
+    private Instant created;
 }
