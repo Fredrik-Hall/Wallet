@@ -18,12 +18,12 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping("/{playerId}")
-    public Response getAccount(@PathVariable long playerId){
+    public Response GetAccount(@PathVariable long playerId){
         return Response.ok().setPayload(accountService.getAccountByPlayerId(playerId));
     }
 
     @PutMapping("/{playerId}")
-    public Response updateAccount(@PathVariable long playerId, @RequestBody @Valid UpdateAccountRequest updateAccountRequest){
+    public Response UpdateAccount(@PathVariable long playerId, @RequestBody @Valid UpdateAccountRequest updateAccountRequest){
         AccountDto accountDto = new AccountDto()
                 .setId(playerId)
                 .setAmount(updateAccountRequest.getAmount());
