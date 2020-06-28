@@ -8,7 +8,7 @@ public enum ExceptionType {
     ENTITY_NOT_FOUND("not.found"),
     DUPLICATE_ENTITY("duplicate"),
     ENTITY_EXCEPTION("exception"),
-    DELETION_EXCEPTION("deletion");
+    INTERNAL_EXCEPTION("internal");
 
     String value;
 

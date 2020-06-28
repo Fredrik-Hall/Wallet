@@ -1,4 +1,4 @@
-package com.casino.wallet.model.player;
+package com.casino.wallet.model.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -9,7 +9,6 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.time.Instant;
 
 @Setter
 @Getter
@@ -19,19 +18,11 @@ import java.time.Instant;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table (name = "Players")
-public class Player {
+@Table(name = "Accounts")
+public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
-    private Instant created = Instant.now();
-
+    private double amount;
 }

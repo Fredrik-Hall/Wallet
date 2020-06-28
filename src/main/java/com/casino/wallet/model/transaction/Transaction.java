@@ -1,4 +1,4 @@
-package com.casino.wallet.model.Transaction;
+package com.casino.wallet.model.transaction;
 
 import javax.persistence.*;
 import java.time.Instant;

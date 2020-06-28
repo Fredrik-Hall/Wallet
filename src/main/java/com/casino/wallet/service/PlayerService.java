@@ -1,7 +1,6 @@
 package com.casino.wallet.service;
 
 import com.casino.wallet.dto.model.PlayerDto;
-import com.casino.wallet.model.player.Player;
 
 import java.util.List;
 
