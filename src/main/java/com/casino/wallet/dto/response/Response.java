@@ -48,9 +48,9 @@ public class Response<T> {
         response.setStatus(Status.NOT_ENOUGH_FUNDS);
         return response;
     }
-    public static <T> Response<T> exception(){
+    public static <T> Response<T> internal(){
         Response<T> response = new Response<>();
-        response.setStatus(Status.EXCEPTION);
+        response.setStatus(Status.INTERNAL);
         return response;
     }
     public static <T> Response<T> wrongCredentials(){
@@ -82,6 +82,6 @@ public class Response<T> {
     }
 
     public enum Status{
-        OK, BAD_REQUEST,UNAUTHORIZED, VALIDATION_EXCEPTION, NOT_ENOUGH_FUNDS, EXCEPTION, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTRY
+        OK, BAD_REQUEST,UNAUTHORIZED, VALIDATION_EXCEPTION, NOT_ENOUGH_FUNDS, INTERNAL, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTRY
     }
 }

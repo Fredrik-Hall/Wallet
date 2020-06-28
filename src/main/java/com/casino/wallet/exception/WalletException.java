@@ -32,8 +32,8 @@ public class WalletException {
         }
     }
 
-    public static class DeletionException extends RuntimeException {
-        public DeletionException(String message) {
+    public static class InternalException extends RuntimeException {
+        public InternalException(String message) {
             super(message);
         }
     }
@@ -43,8 +43,8 @@ public class WalletException {
             return new EntityNotFoundException(format(messageTemplate, args));
         } else if (ExceptionType.DUPLICATE_ENTITY.equals(exceptionType)) {
             return new DuplicateEntityException(format(messageTemplate, args));
-        } else if (ExceptionType.DELETION_EXCEPTION.equals(exceptionType)){
-            return new DeletionException(format(messageTemplate, args));
+        } else if (ExceptionType.INTERNAL_EXCEPTION.equals(exceptionType)){
+            return new InternalException(format(messageTemplate, args));
         }
         return new RuntimeException(format(messageTemplate, args));
     }

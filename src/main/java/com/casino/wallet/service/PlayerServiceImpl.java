@@ -5,9 +5,10 @@ import com.casino.wallet.dto.model.PlayerDto;
 import com.casino.wallet.exception.EntityType;
 import com.casino.wallet.exception.ExceptionType;
 import com.casino.wallet.exception.WalletException;
+import com.casino.wallet.model.account.Account;
 import com.casino.wallet.model.player.Player;
+import com.casino.wallet.repository.AccountRepository;
 import com.casino.wallet.repository.PlayerRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,9 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Override
     public List<PlayerDto> getAllPlayers() {
@@ -48,24 +52,30 @@ public class PlayerServiceImpl implements PlayerService{
                     .setEmail(playerDto.getEmail())
                     .setFirstName(playerDto.getFirstName())
                     .setLastName(playerDto.getLastName());
-            return (PlayerMapper.toPlayerDto(playerRepository.save(player)));
+            PlayerDto savedPlayer = PlayerMapper.toPlayerDto(playerRepository.save(player));
+            accountRepository.save(new Account()
+                    .setId(savedPlayer.getId())
+                    .setAmount(0.0));
+
+            return savedPlayer;
         }
         throw exception(PLAYER,DUPLICATE_ENTITY,playerDto.getEmail());
     }
 
     @Override
     public PlayerDto updatePlayer(PlayerDto playerDto) {
-        Optional<Player> oldPlayerById = Optional.ofNullable(playerRepository.findById(playerDto.getId()));
-        if(oldPlayerById.isPresent()){
-            Player oldPlayerByEmail = playerRepository.findByEmail(playerDto.getEmail());
-            if (oldPlayerByEmail == null || oldPlayerByEmail.getId() == playerDto.getId()) {
-                oldPlayerByEmail = new Player()
+        Optional<Player> playerById = Optional.ofNullable(playerRepository.findById(playerDto.getId()));
+        if(playerById.isPresent()){
+            //Make sure the email sent in is not in use by another player
+            Player playerByEmail = playerRepository.findByEmail(playerDto.getEmail());
+            if (playerByEmail == null || playerByEmail.getId() == playerDto.getId()) {
+                Player updatedPlayer = new Player()
                         .setEmail(playerDto.getEmail())
                         .setFirstName(playerDto.getFirstName())
                         .setId(playerDto.getId())
-                        .setCreated(oldPlayerById.get().getCreated())
+                        .setCreated(playerById.get().getCreated())
                         .setLastName(playerDto.getLastName());
-                return (PlayerMapper.toPlayerDto(playerRepository.save(oldPlayerByEmail)));
+                return PlayerMapper.toPlayerDto(playerRepository.save(updatedPlayer));
             }
             throw exception(PLAYER,DUPLICATE_ENTITY,playerDto.getEmail());
         }
@@ -77,11 +87,13 @@ public class PlayerServiceImpl implements PlayerService{
         Optional<Player> player = playerRepository.findById(id);
         if (player.isPresent()) {
             playerRepository.deleteById(id);
+            accountRepository.deleteById(id);
             Optional<Player> deletedPlayer = playerRepository.findById(id);
-            if (deletedPlayer.isEmpty()) {
+            Optional<Account> deletedAccount = accountRepository.findById(id);
+            if (deletedPlayer.isEmpty() && deletedAccount.isEmpty()) {
                 return PlayerMapper.toPlayerDto(player.get());
             }
-            throw exception(PLAYER, DELETION_EXCEPTION,id.toString());
+            throw exception(PLAYER, INTERNAL_EXCEPTION,"There was an issue deleting player with id "+id.toString());
         }
         throw exception(PLAYER, ENTITY_NOT_FOUND,id.toString());
     }
