@@ -2,6 +2,7 @@ package com.casino.wallet.exception;
 
 import com.casino.wallet.config.ExceptionConfig;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.text.MessageFormat;
 import java.util.Optional;
@@ -32,6 +33,12 @@ public class WalletException {
         }
     }
 
+    public static class NotEnoughFundsException extends RuntimeException {
+        public NotEnoughFundsException(String message) {
+            super(message);
+        }
+    }
+
     public static class InternalException extends RuntimeException {
         public InternalException(String message) {
             super(message);
@@ -45,6 +52,8 @@ public class WalletException {
             return new DuplicateEntityException(format(messageTemplate, args));
         } else if (ExceptionType.INTERNAL_EXCEPTION.equals(exceptionType)){
             return new InternalException(format(messageTemplate, args));
+        } else if(ExceptionType.NOT_ENOUGH_FUNDS.equals(exceptionType)){
+            return new NotEnoughFundsException(format(messageTemplate, args));
         }
         return new RuntimeException(format(messageTemplate, args));
     }

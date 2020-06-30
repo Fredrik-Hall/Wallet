@@ -7,8 +7,8 @@ import lombok.Getter;
 public enum ExceptionType {
     ENTITY_NOT_FOUND("not.found"),
     DUPLICATE_ENTITY("duplicate"),
-    ENTITY_EXCEPTION("exception"),
-    INTERNAL_EXCEPTION("internal");
+    INTERNAL_EXCEPTION("internal"),
+    NOT_ENOUGH_FUNDS("not.enough.funds");
 
     String value;
 
