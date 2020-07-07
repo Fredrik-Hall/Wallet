@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -15,4 +18,17 @@ import javax.validation.Valid;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Valid
 public class WithdrawRequest {
+
+    @NotEmpty(message = "PlayerId cannot be empty")
+    private long playerId;
+
+    @NotEmpty(message = "TransactionId cannot be empty")
+    private long transactionId;
+
+    @NotEmpty(message = "RoundId cannot be empty")
+    private long roundId;
+
+    @Positive(message = "The amount must be positive.")
+    private double amount;
+
 }

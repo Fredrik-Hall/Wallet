@@ -12,6 +12,7 @@ public class TransactionMapper {
                 .setPlayerId(transaction.getPlayerId())
                 .setRoundId(transaction.getRoundId())
                 .setTransactionId(transaction.getTransactionId())
-                .setWithdrawal(transaction.isWithdrawal());
+                .setWithdrawal(transaction.isWithdrawal())
+                .setCancelled(transaction.isCancelled());
     }
 }

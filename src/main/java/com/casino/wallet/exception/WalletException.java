@@ -45,6 +45,10 @@ public class WalletException {
         }
     }
 
+    public static class NotAllowedException extends RuntimeException {
+        public NotAllowedException(String message) {super(message); }
+    }
+
     private static RuntimeException throwException(ExceptionType exceptionType, String messageTemplate, String... args) {
         if (ExceptionType.ENTITY_NOT_FOUND.equals(exceptionType)) {
             return new EntityNotFoundException(format(messageTemplate, args));

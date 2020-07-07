@@ -73,6 +73,11 @@ public class Response<T> {
         response.setStatus(Status.DUPLICATE_ENTRY);
         return response;
     }
+    public static <T> Response<T> notAllowed(){
+        Response<T> response = new Response<>();
+        response.setStatus(Status.NOT_ALLOWED);
+        return response;
+    }
     public void addErrorMsg(String errorMsg, Exception ex){
         ResponseError error = new ResponseError()
                 .setMessage(errorMsg)
@@ -82,6 +87,6 @@ public class Response<T> {
     }
 
     public enum Status{
-        OK, BAD_REQUEST,UNAUTHORIZED, VALIDATION_EXCEPTION, NOT_ENOUGH_FUNDS, INTERNAL, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTRY
+        OK, BAD_REQUEST,UNAUTHORIZED, NOT_ALLOWED,VALIDATION_EXCEPTION, NOT_ENOUGH_FUNDS, INTERNAL, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTRY
     }
 }

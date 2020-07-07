@@ -37,4 +37,6 @@ public class Transaction {
     private boolean withdrawal;
 
     private double amount;
+
+    private boolean cancelled;
 }

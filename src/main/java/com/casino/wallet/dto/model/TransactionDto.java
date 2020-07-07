@@ -33,4 +33,6 @@ public class TransactionDto {
 
     private double amount;
 
+    private boolean cancelled;
+
 }

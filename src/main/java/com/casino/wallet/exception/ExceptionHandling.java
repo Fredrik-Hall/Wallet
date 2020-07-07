@@ -34,6 +34,13 @@ public class ExceptionHandling {
         return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(WalletException.NotAllowedException.class)
+    public final ResponseEntity handleNotAllowedException(Exception ex, WebRequest request) {
+        Response response = Response.notAllowed();
+        response.addErrorMsg(ex.getMessage(), ex);
+        return new ResponseEntity(response, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
     @ExceptionHandler(WalletException.DuplicateEntityException.class)
     public final ResponseEntity handleDuplicateException(Exception ex, WebRequest request) {
         Response response = Response.duplicateEntry();

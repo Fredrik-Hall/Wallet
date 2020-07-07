@@ -85,14 +85,18 @@ public class TransactionServiceImpl implements TransactionService{
                 } else {
                     if(hasEnoughFunds(transactionDto,account.get())){
                         Account accountAfterTransaction = new Account()
-                                .setAmount(account.get().getAmount()-transactionDto.getAmount())
+                                .setAmount(account.get().getAmount() - transactionDto.getAmount())
                                 .setId(transactionDto.getPlayerId());
                         Transaction newTransaction = new Transaction()
                                 .setTransactionId(transactionDto.getTransactionId())
                                 .setAmount(transactionDto.getAmount())
                                 .setPlayerId(transactionDto.getPlayerId())
                                 .setRoundId(transactionDto.getRoundId())
-                                .setWithdrawal(true);
+                                .setWithdrawal(true)
+                                .setCancelled(false);
+
+                        accountRepository.save(accountAfterTransaction);
+                        return TransactionMapper.toTransactionDto(transactionRepository.save(newTransaction));
                     }
                     throw exception(TRANSACTION,NOT_ENOUGH_FUNDS,
                             String.valueOf(transactionDto.getPlayerId()),
@@ -108,13 +112,84 @@ public class TransactionServiceImpl implements TransactionService{
     @Override
     @Transactional
     public TransactionDto deposit(TransactionDto transactionDto) {
-        return null;
+        Optional<Player> player = playerRepository.findById(transactionDto.getPlayerId());
+        if (player.isPresent()) {
+            Optional<Account> account = accountRepository.findById(transactionDto.getPlayerId());
+            if (account.isPresent()) {
+                Optional<Transaction> transaction = transactionRepository.findByTransactionId(transactionDto.getTransactionId());
+                if (transaction.isPresent()) {
+                    if(isSameTransaction(transactionDto,transaction.get())){
+                        return TransactionMapper.toTransactionDto(transaction.get());
+                    }
+                    throw exception(TRANSACTION,DUPLICATE_ENTITY, String.valueOf(transactionDto.getTransactionId()));
+                } else {
+
+                    Account accountAfterTransaction = new Account()
+                            .setAmount(account.get().getAmount() + transactionDto.getAmount())
+                            .setId(transactionDto.getPlayerId());
+                    Transaction newTransaction = new Transaction()
+                            .setTransactionId(transactionDto.getTransactionId())
+                            .setAmount(transactionDto.getAmount())
+                            .setPlayerId(transactionDto.getPlayerId())
+                            .setRoundId(transactionDto.getRoundId())
+                            .setWithdrawal(true)
+                            .setCancelled(false);
+
+                    accountRepository.save(accountAfterTransaction);
+                    return TransactionMapper.toTransactionDto(transactionRepository.save(newTransaction));
+
+                }
+            }
+            throw exception(ACCOUNT,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
+        }
+        throw exception(PLAYER,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
     }
 
     @Override
     @Transactional
     public TransactionDto cancel(TransactionDto transactionDto) {
-        return null;
+        Optional<Player> player = playerRepository.findById(transactionDto.getPlayerId());
+        if (player.isPresent()) {
+            Optional<Account> account = accountRepository.findById(transactionDto.getPlayerId());
+            if (account.isPresent()) {
+                    Optional<Transaction> transaction = transactionRepository.findByTransactionId(transactionDto.getTransactionId());
+                    if (transaction.isPresent()) {
+                        if(transaction.get().isWithdrawal()){
+                            if(isSameTransaction(transactionDto,transaction.get())) {
+
+                            Account accountAfterTransaction = new Account()
+                                    .setAmount(account.get().getAmount() - transactionDto.getAmount())
+                                    .setId(transactionDto.getPlayerId());
+                            Transaction newTransaction = new Transaction()
+                                    .setTransactionId(transactionDto.getTransactionId())
+                                    .setAmount(transactionDto.getAmount())
+                                    .setPlayerId(transactionDto.getPlayerId())
+                                    .setRoundId(transactionDto.getRoundId())
+                                    .setWithdrawal(true)
+                                    .setCancelled(true);
+
+                            accountRepository.save(accountAfterTransaction);
+                            return TransactionMapper.toTransactionDto(transactionRepository.save(newTransaction));
+                        }
+                        throw exception(TRANSACTION,NOT_ALLOWED, "Cancelling a transaction with non matching values");
+                        }
+                        throw exception(TRANSACTION,NOT_ALLOWED,"Cancelling a deposit transaction");
+                    } else {
+
+                        Transaction newTransaction = new Transaction()
+                                .setTransactionId(transactionDto.getTransactionId())
+                                .setAmount(transactionDto.getAmount())
+                                .setPlayerId(transactionDto.getPlayerId())
+                                .setRoundId(transactionDto.getRoundId())
+                                .setWithdrawal(true)
+                                .setCancelled(true);
+
+                        return TransactionMapper.toTransactionDto(transactionRepository.save(newTransaction));
+                    }
+            }
+            throw exception(ACCOUNT,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
+        }
+        throw exception(PLAYER,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
     }
 
     // Make sure the player has enough funds in his account.
@@ -129,8 +204,7 @@ public class TransactionServiceImpl implements TransactionService{
     private boolean isSameTransaction(TransactionDto inputTransaction, Transaction oldTransaction){
         return (inputTransaction.getAmount() == oldTransaction.getAmount() &&
                 inputTransaction.getPlayerId() == oldTransaction.getPlayerId() &&
-                inputTransaction.getRoundId() == oldTransaction.getRoundId() &&
-                inputTransaction.getTransactionId() == oldTransaction.getTransactionId());
+                inputTransaction.getRoundId() == oldTransaction.getRoundId());
     }
 
     private RuntimeException exception (EntityType entityType, ExceptionType exceptionType, String... args){
