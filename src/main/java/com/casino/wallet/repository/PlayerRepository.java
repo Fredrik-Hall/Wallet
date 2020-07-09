@@ -4,6 +4,5 @@ import com.casino.wallet.model.player.Player;
 import org.springframework.data.repository.CrudRepository;
 
 public interface PlayerRepository extends CrudRepository<Player, Long> {
-    Player findById(long id);
     Player findByEmail(String email);
 }

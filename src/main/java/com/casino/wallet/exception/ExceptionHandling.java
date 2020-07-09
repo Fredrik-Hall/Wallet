@@ -16,6 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"rawtypes","unchecked"})
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ExceptionHandling {
@@ -34,6 +35,20 @@ public class ExceptionHandling {
         return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(WalletException.NotAllowedException.class)
+    public final ResponseEntity handleNotAllowedException(Exception ex, WebRequest request) {
+        Response response = Response.notAllowed();
+        response.addErrorMsg(ex.getMessage(), ex);
+        return new ResponseEntity(response, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(WalletException.NotEnoughFundsException.class)
+    public final ResponseEntity handleNotEnoughFundsException(Exception ex, WebRequest request) {
+        Response response = Response.notEnoughFunds();
+        response.addErrorMsg(ex.getMessage(), ex);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
     @ExceptionHandler(WalletException.DuplicateEntityException.class)
     public final ResponseEntity handleDuplicateException(Exception ex, WebRequest request) {
         Response response = Response.duplicateEntry();
@@ -42,7 +57,7 @@ public class ExceptionHandling {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
+    protected ResponseEntity handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
         Response response = Response.validationException();
         List<String> details = new ArrayList<>();
         for (final ObjectError error : ex.getBindingResult().getAllErrors()) {

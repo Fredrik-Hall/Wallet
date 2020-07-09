@@ -64,7 +64,7 @@ public class PlayerServiceImpl implements PlayerService{
 
     @Override
     public PlayerDto updatePlayer(PlayerDto playerDto) {
-        Optional<Player> playerById = Optional.ofNullable(playerRepository.findById(playerDto.getId()));
+        Optional<Player> playerById = playerRepository.findById(playerDto.getId());
         if(playerById.isPresent()){
             //Make sure the email sent in is not in use by another player
             Player playerByEmail = playerRepository.findByEmail(playerDto.getEmail());

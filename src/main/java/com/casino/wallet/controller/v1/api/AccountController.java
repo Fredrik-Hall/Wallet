@@ -1,7 +1,6 @@
 package com.casino.wallet.controller.v1.api;
 
 import com.casino.wallet.controller.v1.request.UpdateAccountRequest;
-import com.casino.wallet.controller.v1.request.UpdatePlayerRequest;
 import com.casino.wallet.dto.model.AccountDto;
 import com.casino.wallet.dto.response.Response;
 import com.casino.wallet.service.AccountService;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("/v1/account")
 public class AccountController {
@@ -17,13 +17,16 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    @SuppressWarnings("rawtypes")
     @GetMapping("/{playerId}")
-    public Response getAccount(@PathVariable long playerId){
+    public Response GetAccount(@PathVariable Long playerId){
         return Response.ok().setPayload(accountService.getAccountByPlayerId(playerId));
     }
 
     @PutMapping("/{playerId}")
-    public Response updateAccount(@PathVariable long playerId, @RequestBody @Valid UpdateAccountRequest updateAccountRequest){
+    public Response UpdateAccount(@PathVariable Long playerId,
+                                  @RequestBody @Valid UpdateAccountRequest updateAccountRequest){
+
         AccountDto accountDto = new AccountDto()
                 .setId(playerId)
                 .setAmount(updateAccountRequest.getAmount());

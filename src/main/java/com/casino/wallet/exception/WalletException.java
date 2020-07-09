@@ -32,10 +32,20 @@ public class WalletException {
         }
     }
 
+    public static class NotEnoughFundsException extends RuntimeException {
+        public NotEnoughFundsException(String message) {
+            super(message);
+        }
+    }
+
     public static class InternalException extends RuntimeException {
         public InternalException(String message) {
             super(message);
         }
+    }
+
+    public static class NotAllowedException extends RuntimeException {
+        public NotAllowedException(String message) {super(message); }
     }
 
     private static RuntimeException throwException(ExceptionType exceptionType, String messageTemplate, String... args) {
@@ -45,6 +55,8 @@ public class WalletException {
             return new DuplicateEntityException(format(messageTemplate, args));
         } else if (ExceptionType.INTERNAL_EXCEPTION.equals(exceptionType)){
             return new InternalException(format(messageTemplate, args));
+        } else if(ExceptionType.NOT_ENOUGH_FUNDS.equals(exceptionType)){
+            return new NotEnoughFundsException(format(messageTemplate, args));
         }
         return new RuntimeException(format(messageTemplate, args));
     }
@@ -56,6 +68,6 @@ public class WalletException {
 
     private static String format(String template, String... args) {
         Optional<String> templateContent = Optional.ofNullable(exceptionConfig.getConfigValue(template));
-        return templateContent.map(s -> MessageFormat.format(s, args)).orElseGet(() -> String.format(template, args));
+        return templateContent.map(s -> MessageFormat.format(s, (Object) args)).orElseGet(() -> String.format(template, (Object) args));
     }
 }

@@ -1,4 +1,4 @@
-package com.casino.wallet.model.transaction;
+package com.casino.wallet.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
 import java.time.Instant;
 
 @Setter
@@ -18,17 +17,13 @@ import java.time.Instant;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Entity
-@Table(name = "Transactions")
-public class Transaction {
+public class TransactionDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private long playerId;
 
-    private Instant created = Instant.now();
+    private Instant created;
 
     private long transactionId;
 
@@ -39,4 +34,5 @@ public class Transaction {
     private double amount;
 
     private boolean cancelled;
+
 }
