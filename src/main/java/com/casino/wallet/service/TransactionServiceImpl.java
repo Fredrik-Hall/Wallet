@@ -46,7 +46,7 @@ public class TransactionServiceImpl implements TransactionService{
     public List<TransactionDto> getAllTransactionsByPlayerId(Long playerId) {
         Optional<Player> player = playerRepository.findById(playerId);
         if (player.isPresent()) {
-            return StreamSupport.stream(transactionRepository.findByPlayerId(playerId).spliterator(), false)
+            return transactionRepository.findByPlayerId(playerId).stream()
                     .map(TransactionMapper::toTransactionDto)
                     .collect(Collectors.toList());
         }
@@ -55,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService{
 
     @Override
     public List<TransactionDto> getAllTransactionsByRoundId(Long roundId) {
-        return StreamSupport.stream(transactionRepository.findByRoundId(roundId).spliterator(), false)
+        return transactionRepository.findByRoundId(roundId).stream()
                 .map(TransactionMapper::toTransactionDto)
                 .collect(Collectors.toList());
     }
@@ -132,7 +132,7 @@ public class TransactionServiceImpl implements TransactionService{
                             .setAmount(transactionDto.getAmount())
                             .setPlayerId(transactionDto.getPlayerId())
                             .setRoundId(transactionDto.getRoundId())
-                            .setWithdrawal(true)
+                            .setWithdrawal(false)
                             .setCancelled(false);
 
                     accountRepository.save(accountAfterTransaction);
@@ -156,11 +156,16 @@ public class TransactionServiceImpl implements TransactionService{
                     if (transaction.isPresent()) {
                         if(transaction.get().isWithdrawal()){
                             if(isSameTransaction(transactionDto,transaction.get())) {
+                                if(transaction.get().isCancelled()){
+                                    return TransactionMapper.toTransactionDto(transaction.get());
+                                }
 
                             Account accountAfterTransaction = new Account()
-                                    .setAmount(account.get().getAmount() - transactionDto.getAmount())
+                                    .setAmount(account.get().getAmount() + transactionDto.getAmount())
                                     .setId(transactionDto.getPlayerId());
                             Transaction newTransaction = new Transaction()
+                                    .setId(transaction.get().getId())
+                                    .setCreated(transaction.get().getCreated())
                                     .setTransactionId(transactionDto.getTransactionId())
                                     .setAmount(transactionDto.getAmount())
                                     .setPlayerId(transactionDto.getPlayerId())

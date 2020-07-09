@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.*;
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 @RestController
 @RequestMapping("/v1/player")
 public class PlayerController {
@@ -38,13 +39,13 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerId}")
-    public Response GetPlayer(@PathVariable long playerId){
+    public Response GetPlayer(@PathVariable Long playerId){
         return Response.ok().setPayload(playerService.getPlayerById(playerId));
 
     }
 
     @PutMapping("/{playerId}")
-    public Response UpdatePlayer(@RequestBody @Valid UpdatePlayerRequest updatePlayerRequest, @PathVariable long playerId){
+    public Response UpdatePlayer(@RequestBody @Valid UpdatePlayerRequest updatePlayerRequest, @PathVariable Long playerId){
         PlayerDto playerDto = new PlayerDto()
                 .setEmail(updatePlayerRequest.getEmail())
                 .setFirstName(updatePlayerRequest.getFirstName())
@@ -55,7 +56,7 @@ public class PlayerController {
     }
 
     @DeleteMapping("/{playerId}")
-    public Response DeletePlayer(@PathVariable long playerId){
+    public Response DeletePlayer(@PathVariable Long playerId){
         return Response.ok().setPayload(playerService.deletePlayer(playerId));
     }
 }

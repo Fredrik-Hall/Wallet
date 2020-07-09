@@ -2,7 +2,6 @@ package com.casino.wallet.exception;
 
 import com.casino.wallet.config.ExceptionConfig;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.text.MessageFormat;
 import java.util.Optional;
@@ -69,6 +68,6 @@ public class WalletException {
 
     private static String format(String template, String... args) {
         Optional<String> templateContent = Optional.ofNullable(exceptionConfig.getConfigValue(template));
-        return templateContent.map(s -> MessageFormat.format(s, args)).orElseGet(() -> String.format(template, args));
+        return templateContent.map(s -> MessageFormat.format(s, (Object) args)).orElseGet(() -> String.format(template, (Object) args));
     }
 }

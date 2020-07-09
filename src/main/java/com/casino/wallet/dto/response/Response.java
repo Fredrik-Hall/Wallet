@@ -32,12 +32,6 @@ public class Response<T> {
         return response;
     }
 
-    public static <T> Response<T> unauthorized(){
-        Response<T> response = new Response<>();
-        response.setStatus(Status.UNAUTHORIZED);
-        return response;
-    }
-
     public static <T> Response<T> validationException(){
         Response<T> response = new Response<>();
         response.setStatus(Status.VALIDATION_EXCEPTION);
@@ -51,16 +45,6 @@ public class Response<T> {
     public static <T> Response<T> internal(){
         Response<T> response = new Response<>();
         response.setStatus(Status.INTERNAL);
-        return response;
-    }
-    public static <T> Response<T> wrongCredentials(){
-        Response<T> response = new Response<>();
-        response.setStatus(Status.WRONG_CREDENTIALS);
-        return response;
-    }
-    public static <T> Response<T> accessDenied(){
-        Response<T> response = new Response<>();
-        response.setStatus(Status.ACCESS_DENIED);
         return response;
     }
     public static <T> Response<T> notFound(){
@@ -87,6 +71,6 @@ public class Response<T> {
     }
 
     public enum Status{
-        OK, BAD_REQUEST,UNAUTHORIZED, NOT_ALLOWED,VALIDATION_EXCEPTION, NOT_ENOUGH_FUNDS, INTERNAL, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTRY
+        OK, BAD_REQUEST, NOT_ALLOWED,VALIDATION_EXCEPTION, NOT_ENOUGH_FUNDS, INTERNAL, NOT_FOUND, DUPLICATE_ENTRY
     }
 }

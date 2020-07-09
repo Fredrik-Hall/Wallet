@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 @Getter
@@ -17,6 +18,7 @@ import javax.validation.constraints.PositiveOrZero;
 @Valid
 public class UpdateAccountRequest {
 
-    @PositiveOrZero(message = "Amount must be positive or zero")
-    private double amount;
+    @PositiveOrZero(message = "Amount must be positive or zero.")
+    @NotNull(message = "Amount cannot be null.")
+    private Double amount;
 }

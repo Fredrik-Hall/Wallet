@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Getter
@@ -18,15 +18,13 @@ import javax.validation.constraints.Positive;
 @Valid
 public class CancelRequest {
 
-    @NotEmpty(message = "PlayerId cannot be empty")
-    private long playerId;
+    @NotNull(message = "TransactionId cannot be null.")
+    private Long transactionId;
 
-    @NotEmpty(message = "TransactionId cannot be empty")
-    private long transactionId;
-
-    @NotEmpty(message = "RoundId cannot be empty")
-    private long roundId;
+    @NotNull(message = "RoundId cannot be null.")
+    private Long roundId;
 
     @Positive(message = "The amount must be positive.")
-    private double amount;
+    @NotNull(message = "Amount cannot be null.")
+    private Double amount;
 }

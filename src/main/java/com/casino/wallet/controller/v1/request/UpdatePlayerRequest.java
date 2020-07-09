@@ -17,10 +17,10 @@ import javax.validation.constraints.NotEmpty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Valid
 public class UpdatePlayerRequest {
-    @NotEmpty(message = "First name cannot be empty")
+    @NotEmpty(message = "First name cannot be empty.")
     private String firstName;
-    @NotEmpty(message = "Last name cannot be empty")
+    @NotEmpty(message = "Last name cannot be empty.")
     private String lastName;
-    @Email(message = "Email must be valid")
+    @Email(message = "Email must be valid.")
     private String email;
 }
