@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,10 +40,10 @@ public class AccountControllerTest {
     private final HttpHeaders authHeader = createHeaders(authUsername,authPassword);
 
     @Test
-    public void GetAccount_ShouldReturnOK() throws Exception {
+    public void GetAccount_whenCalledCorrectly_thenShouldReturnOK() throws Exception {
         //Given
         long playerId = 1;
-        AccountDto accountDto = new AccountDto().setId(1).setAmount(10.0);
+        AccountDto accountDto = new AccountDto().setId(playerId).setAmount(10.0);
         Mockito.when(accountService.getAccountByPlayerId(playerId))
                 .thenReturn(accountDto);
 
@@ -51,12 +52,26 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.id", is((int)accountDto.getId())))
-                .andExpect(jsonPath("$.payload.amount", is(accountDto.getAmount())));
+                .andExpect(jsonPath("$.payload.id", is(1)))
+                .andExpect(jsonPath("$.payload.amount", is(10.0)));
     }
 
     @Test
-    public void UpdateAccount_ShouldReturnOK() throws Exception {
+    public void GetAccount_whenCalledWithoutAuthheader_thenShouldReturnUnauthorized() throws Exception {
+        //Given
+        long playerId = 1;
+        AccountDto accountDto = new AccountDto().setId(playerId).setAmount(10.0);
+        Mockito.when(accountService.getAccountByPlayerId(playerId))
+                .thenReturn(accountDto);
+
+        //When && Then
+        mvc.perform(get("/v1/account/"+playerId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void UpdateAccount_whenCalledCorrectly_thenShouldReturnOK() throws Exception {
         //Given
         long playerId = 1;
         double amount = 10.0;
@@ -64,7 +79,7 @@ public class AccountControllerTest {
         AccountDto accountDto = new AccountDto()
                 .setAmount(amount)
                 .setId(playerId);
-        Mockito.when(accountService.updateAccount(accountDto))
+        Mockito.when(accountService.updateAccount(any(AccountDto.class)))
                 .thenReturn(accountDto);
 
         //When && Then
@@ -72,7 +87,72 @@ public class AccountControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updateAccountRequest)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.payload.id",is(1)))
+                .andExpect(jsonPath("$.payload.amount", is(10.0)));
+    }
+
+    @Test
+    public void UpdateAccount_whenCalledWithNegativeAmount_thenShouldReturnBadRequest() throws Exception {
+        //Given
+        long playerId = 1;
+        double amount = -1;
+        UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest().setAmount(amount);
+        AccountDto accountDto = new AccountDto()
+                .setAmount(amount)
+                .setId(playerId);
+        Mockito.when(accountService.updateAccount(any(AccountDto.class)))
+                .thenReturn(accountDto);
+
+        //When && Then
+        mvc.perform(put("/v1/account/"+playerId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(authHeader)
+                .content(new ObjectMapper().writeValueAsBytes(updateAccountRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message",is("[Amount must be positive or zero.]")));
+    }
+
+    @Test
+    public void UpdateAccount_whenCalledWithNullAmount_thenShouldReturnBadRequest() throws Exception {
+        //Given
+        long playerId = 1;
+        double amount = 10.0;
+        UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest().setAmount(null);
+        AccountDto accountDto = new AccountDto()
+                .setAmount(amount)
+                .setId(playerId);
+        Mockito.when(accountService.updateAccount(any(AccountDto.class)))
+                .thenReturn(accountDto);
+
+        //When && Then
+        mvc.perform(put("/v1/account/"+playerId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(authHeader)
+                .content(new ObjectMapper().writeValueAsBytes(updateAccountRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message",is("[Amount cannot be null.]")));
+    }
+
+    @Test
+    public void UpdateAccount_whenCalledWithoutAuthHeader_thenShouldReturnUnauthorized() throws Exception {
+        //Given
+        long playerId = 1;
+        double amount = 10.0;
+        UpdateAccountRequest updateAccountRequest = new UpdateAccountRequest().setAmount(null);
+        AccountDto accountDto = new AccountDto()
+                .setAmount(amount)
+                .setId(playerId);
+        Mockito.when(accountService.updateAccount(any(AccountDto.class)))
+                .thenReturn(accountDto);
+
+        //When && Then
+        mvc.perform(put("/v1/account/"+playerId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsBytes(updateAccountRequest)))
+                .andExpect(status().isUnauthorized());
     }
 
 

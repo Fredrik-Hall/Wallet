@@ -20,19 +20,19 @@ import java.time.Instant;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TransactionDto {
 
-    private long id;
+    private Long id;
 
-    private long playerId;
+    private Long playerId;
 
     private Instant created;
 
-    private long transactionId;
+    private Long transactionId;
 
-    private long roundId;
+    private Long roundId;
 
     private boolean withdrawal;
 
-    private double amount;
+    private Double amount;
 
     private boolean cancelled;
 

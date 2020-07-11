@@ -15,10 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
@@ -252,16 +249,14 @@ public class TransactionServiceImplTest {
     public void getAllTransactionsByPlayerId_whenPlayerDoesntExist_thenShouldThrowException(){
         //Given
         long playerId = playerThree.getId();
-        String expectedMessagePart1 = "Player with id";
-        String expectedMessagePart2 =  "was not found.";
+        String expectedMessage = "Player with id " + playerId + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> transactionService.getAllTransactionsByPlayerId(playerId));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -315,16 +310,15 @@ public class TransactionServiceImplTest {
     public void getTransaction_whenTransactionDoesntExist_thenShouldThrowException(){
         //Given
         long transactionId = nonExisting.getId();
-        String expectedMessagePart1 = "Transaction with id";
-        String expectedMessagePart2 =  "was not found.";
+        String expectedMessage = "Transaction with id "+ transactionId + " was not found.";
+
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> transactionService.getTransaction(transactionId));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -399,16 +393,14 @@ public class TransactionServiceImplTest {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerThree.getId());
-        String expectedMessagePart1 = "Player with id";
-        String expectedMessagePart2 =  "was not found.";
+        String expectedMessage = "Player with id " + transactionDto.getPlayerId() + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> transactionService.withdraw(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -416,16 +408,15 @@ public class TransactionServiceImplTest {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerFour.getId());
-        String expectedMessagePart1 = "Account for player with id";
-        String expectedMessagePart2 =  "was not found.";
+        String expectedMessage = "Account for player with id " + transactionDto.getPlayerId() + " was not found.";
+
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> transactionService.withdraw(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -436,8 +427,7 @@ public class TransactionServiceImplTest {
                 .setPlayerId(bet2.getPlayerId())
                 .setRoundId(bet2.getRoundId())
                 .setAmount(bet2.getAmount());
-        String expectedMessagePart1 = "Transaction with Id";
-        String expectedMessagePart2 =  "already exists for another player.";
+        String expectedMessage = "Transaction with Id " + transactionDto.getTransactionId() + " already exists for another player.";
         Mockito.when(transactionRepository.findByTransactionId(transactionDto.getTransactionId()))
                 .thenReturn(Optional.ofNullable(bet));
 
@@ -446,8 +436,7 @@ public class TransactionServiceImplTest {
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -458,18 +447,14 @@ public class TransactionServiceImplTest {
                 .setPlayerId(bet2.getPlayerId())
                 .setRoundId(bet2.getRoundId())
                 .setAmount(playerOneAccount.getAmount()+1);
-        String expectedMessagePart1 = "Player";
-        String expectedMessagePart2 =  "does not have enough funds. Request amount";
-        String expectedMessagePart3 =  "is larger than Account amount";
+        String expectedMessage = "Player " + transactionDto.getPlayerId() + " does not have enough funds. Request amount " + transactionDto.getAmount() + " is larger than Account amount " + playerOneAccount.getAmount() + ".";
 
         //When
         Exception exception = assertThrows(WalletException.NotEnoughFundsException.class, () -> transactionService.withdraw(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
-        assertTrue(actualMessage.contains(expectedMessagePart3));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -543,16 +528,14 @@ public class TransactionServiceImplTest {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerThree.getId());
-        String expectedMessagePart1 = "Player with id";
-        String expectedMessagePart2 =  "was not found.";
+        String expectedMessage = "Player with id " + transactionDto.getPlayerId() + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> transactionService.deposit(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -560,16 +543,14 @@ public class TransactionServiceImplTest {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerFour.getId());
-        String expectedMessagePart1 = "Account for player with id";
-        String expectedMessagePart2 =  "was not found.";
+        String expectedMessage = "Account for player with id " + transactionDto.getPlayerId() + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> transactionService.deposit(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -580,8 +561,7 @@ public class TransactionServiceImplTest {
                 .setPlayerId(win2.getPlayerId())
                 .setRoundId(win2.getRoundId())
                 .setAmount(win2.getAmount());
-        String expectedMessagePart1 = "Transaction with Id";
-        String expectedMessagePart2 =  "already exists for another player.";
+        String expectedMessage = "Transaction with Id " + transactionDto.getTransactionId() + " already exists for another player.";
         Mockito.when(transactionRepository.findByTransactionId(transactionDto.getTransactionId()))
                 .thenReturn(Optional.ofNullable(win));
 
@@ -590,8 +570,7 @@ public class TransactionServiceImplTest {
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -700,16 +679,14 @@ public class TransactionServiceImplTest {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerThree.getId());
-        String expectedMessagePart1 = "Player with id";
-        String expectedMessagePart2 =  "was not found.";
+        String expectedMessage = "Player with id " + transactionDto.getPlayerId() + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> transactionService.cancel(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -717,16 +694,14 @@ public class TransactionServiceImplTest {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerFour.getId());
-        String expectedMessagePart1 = "Account for player with id";
-        String expectedMessagePart2 =  "was not found.";
+        String expectedMessage = "Account for player with id " + transactionDto.getPlayerId() + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> transactionService.cancel(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -737,14 +712,14 @@ public class TransactionServiceImplTest {
                 .setPlayerId(win3.getPlayerId())
                 .setRoundId(win3.getRoundId())
                 .setAmount(win3.getAmount());
-        String expectedMessagePart1 = "is not allowed.";
+        String expectedMessage = "Cancelling a deposit transaction is not allowed.";
 
         //When
         Exception exception = assertThrows(WalletException.NotAllowedException.class, () -> transactionService.cancel(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -758,14 +733,14 @@ public class TransactionServiceImplTest {
         Mockito.when(transactionRepository.findByTransactionId(transactionDto.getTransactionId()))
                 .thenReturn(Optional.ofNullable(bet));
 
-        String expectedMessagePart1 = "is not allowed.";
+        String expectedMessage = "Cancelling a transaction with non matching values is not allowed.";
 
         //When
         Exception exception = assertThrows(WalletException.NotAllowedException.class, () -> transactionService.cancel(transactionDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 }

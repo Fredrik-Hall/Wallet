@@ -19,7 +19,7 @@ import java.time.Instant;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PlayerDto {
 
-    private long id;
+    private Long id;
 
     private String firstName;
 

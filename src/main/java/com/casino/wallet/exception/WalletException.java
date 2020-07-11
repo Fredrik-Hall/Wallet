@@ -70,6 +70,6 @@ public class WalletException {
 
     private static String format(String template, String... args) {
         Optional<String> templateContent = Optional.ofNullable(exceptionConfig.getConfigValue(template));
-        return templateContent.map(s -> MessageFormat.format(s, (Object) args)).orElseGet(() -> String.format(template, (Object) args));
+        return templateContent.map(s -> MessageFormat.format(s,args)).orElseGet(() -> String.format(template,args));
     }
 }
