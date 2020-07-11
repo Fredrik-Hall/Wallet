@@ -57,6 +57,8 @@ public class WalletException {
             return new InternalException(format(messageTemplate, args));
         } else if(ExceptionType.NOT_ENOUGH_FUNDS.equals(exceptionType)){
             return new NotEnoughFundsException(format(messageTemplate, args));
+        } else if(ExceptionType.NOT_ALLOWED.equals(exceptionType)){
+            return new NotAllowedException(format(messageTemplate, args));
         }
         return new RuntimeException(format(messageTemplate, args));
     }

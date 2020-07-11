@@ -1,5 +1,6 @@
 package com.casino.wallet.dto.model;
 
+import com.casino.wallet.model.account.Account;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -34,5 +35,7 @@ public class TransactionDto {
     private double amount;
 
     private boolean cancelled;
+
+    private Account account;
 
 }
