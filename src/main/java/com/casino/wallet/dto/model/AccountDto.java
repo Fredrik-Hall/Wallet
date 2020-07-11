@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AccountDto {
 
-    private long id;
+    private Long id;
 
-    private double amount;
+    private Double amount;
 }

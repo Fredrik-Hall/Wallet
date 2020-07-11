@@ -80,7 +80,7 @@ public class PlayerServiceImpl implements PlayerService{
             }
             throw exception(PLAYER,DUPLICATE_ENTITY,playerDto.getEmail());
         }
-        throw exception(PLAYER, ENTITY_NOT_FOUND, String.valueOf(playerDto.getId()));
+        throw exception(PLAYER, ENTITY_NOT_FOUND, playerDto.getId().toString());
     }
 
     @Override
@@ -95,9 +95,9 @@ public class PlayerServiceImpl implements PlayerService{
                 if(deletedAccount.isEmpty()){
                     return PlayerMapper.toPlayerDto(player.get());
                 }
-                throw exception(ACCOUNT, INTERNAL_EXCEPTION,"There was an issue deleting account with id "+id.toString());
+                throw exception(ACCOUNT, INTERNAL_EXCEPTION,"There was an issue deleting account with id " + id.toString() + ".");
             }
-            throw exception(PLAYER, INTERNAL_EXCEPTION,"There was an issue deleting player with id "+id.toString());
+            throw exception(PLAYER, INTERNAL_EXCEPTION,"There was an issue deleting player with id " + id.toString() + ".");
         }
         throw exception(PLAYER, ENTITY_NOT_FOUND,id.toString());
     }

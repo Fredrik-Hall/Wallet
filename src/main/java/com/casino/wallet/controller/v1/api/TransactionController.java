@@ -30,7 +30,7 @@ public class TransactionController {
         if (!transactionDtos.isEmpty()){
             return Response.ok().setPayload(transactionDtos);
         }
-        return Response.notFound().setErrors("No transactions found");
+        return Response.notFound().setErrors("No transactions found.");
     }
 
     @GetMapping("/history/player/{playerId}")
@@ -39,7 +39,7 @@ public class TransactionController {
         if (!transactionDtos.isEmpty()){
             return Response.ok().setPayload(transactionDtos);
         }
-        return Response.notFound().setErrors("No transactions found");
+        return Response.notFound().setErrors("No transactions found.");
     }
 
     @GetMapping("/history/transaction/{transactionId}")
@@ -53,7 +53,7 @@ public class TransactionController {
         if (!transactionDtos.isEmpty()){
             return Response.ok().setPayload(transactionDtos);
         }
-        return Response.notFound().setErrors("No transactions found");
+        return Response.notFound().setErrors("No transactions found.");
     }
 
 

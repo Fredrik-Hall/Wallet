@@ -23,5 +23,6 @@ public class RegisterPlayerRequest {
     @NotEmpty(message = "Last name cannot be empty.")
     private String lastName;
     @Email(message = "Email must be valid.")
+    @NotEmpty(message = "Email name cannot be empty.")
     private String email;
 }

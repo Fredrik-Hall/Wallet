@@ -13,10 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
@@ -54,13 +51,14 @@ public class PlayerServiceImplTest {
     private final List<Player> playerList = Arrays.asList(player,
             playerTwo,playerThree,playerFour,
             playerFive,playerSix,playerSeven);
-    private Account playerAccount = new Account().setId(1).setAmount(0);
+    private final Account playerAccount = new Account().setId(1).setAmount(0);
+    private final Optional<Account> emptyAccount = Optional.empty();
+    private final Optional<Player> emptyPlayer = Optional.empty();
 
     @Before
     public void setUp(){
 
-        Optional<Account> emptyAccount = Optional.empty();
-        Optional<Player> emptyPlayer = Optional.empty();
+
 
         Mockito.when(playerRepository.findAll())
                 .thenReturn(playerList);
@@ -78,7 +76,7 @@ public class PlayerServiceImplTest {
         Mockito.when(playerRepository.findById(playerSix.getId()))
                 .thenReturn(Optional.of(playerSix)).thenReturn(emptyPlayer);
         Mockito.when(playerRepository.findById(playerSeven.getId()))
-                .thenReturn(Optional.of(playerSeven));
+                .thenReturn(emptyPlayer);
 
         Mockito.when(playerRepository.findByEmail(player.getEmail()))
                 .thenReturn(null);
@@ -98,9 +96,9 @@ public class PlayerServiceImplTest {
         String accountInternalException = "account.internal";
 
         Mockito.when(exceptionConfig.getConfigValue(playerInternalException))
-                .thenReturn("There was an issue deleting player with id");
+                .thenReturn("There was an issue deleting player with id 5.");
         Mockito.when(exceptionConfig.getConfigValue(accountInternalException))
-                .thenReturn("There was an issue deleting account with id");
+                .thenReturn("There was an issue deleting account with id 6.");
         Mockito.when(exceptionConfig.getConfigValue(playerNotFoundException))
                 .thenReturn("Player with id {0} was not found.");
         Mockito.when(exceptionConfig.getConfigValue(playerDuplicateException))
@@ -158,17 +156,16 @@ public class PlayerServiceImplTest {
     @Test
     public void getPlayerById_whenInvalidId_thenExceptionShouldBeThrown(){
         //Given
-        long playerId = 8;
-        String expectedMessagePart1 = "Player with id";
-        String expectedMessagePart2 =  "was not found.";
+        long playerId = playerSeven.getId();
+        String expectedMessage = "Player with id "+ playerId +" was not found.";
+
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> playerService.getPlayerById(playerId));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -201,16 +198,15 @@ public class PlayerServiceImplTest {
                 .setEmail(playerTwo.getEmail())
                 .setFirstName(playerTwo.getFirstName())
                 .setLastName(playerTwo.getLastName());
-        String expectedMessagePart1 = "A player with the email address";
-        String expectedMessagePart2 =  "already exists.";
+        String expectedMessage = "A player with the email address "+newPlayer.getEmail()+" already exists.";
+
 
         //When
         Exception exception = assertThrows(WalletException.DuplicateEntityException.class, () -> playerService.registerPlayer(newPlayer));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
 
     }
 
@@ -267,20 +263,18 @@ public class PlayerServiceImplTest {
     public void updatePlayer_whenPlayerDoesntExist_thenShouldThrowException(){
         //Given
         PlayerDto playerDto = new PlayerDto()
-                .setId(8)
-                .setFirstName(playerTwo.getFirstName())
-                .setLastName(playerTwo.getLastName())
-                .setEmail(playerTwo.getEmail());
-        String expectedMessagePart1 = "Player with id";
-        String expectedMessagePart2 =  "was not found.";
+                .setId(playerSeven.getId())
+                .setFirstName(playerSeven.getFirstName())
+                .setLastName(playerSeven.getLastName())
+                .setEmail(playerSeven.getEmail());
+        String expectedMessage = "Player with id " + playerDto.getId() + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> playerService.updatePlayer(playerDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
     @Test
     public void updatePlayer_whenNewEmailIsAlreadyInUse_thenShouldThrowException(){
@@ -290,16 +284,14 @@ public class PlayerServiceImplTest {
                 .setFirstName(playerTwo.getFirstName())
                 .setLastName(playerTwo.getLastName())
                 .setEmail(playerThree.getEmail());
-        String expectedMessagePart1 = "A player with the email address";
-        String expectedMessagePart2 =  "already exists.";
+        String expectedMessage = "A player with the email address " + playerDto.getEmail() + " already exists.";
 
         //When
         Exception exception = assertThrows(WalletException.DuplicateEntityException.class, () -> playerService.updatePlayer(playerDto));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
 
     }
 
@@ -321,45 +313,43 @@ public class PlayerServiceImplTest {
     @Test
     public void deletePlayer_whenPlayerDoesntExist_thenShouldThrowException(){
         //Given
-        long playerId = 8;
-        String expectedMessagePart1 = "Player with id";
-        String expectedMessagePart2 =  "was not found.";
+        long playerId = playerSeven.getId();
+        String expectedMessage = "Player with id " + playerId + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> playerService.deletePlayer(playerId));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
-        assertTrue(actualMessage.contains(expectedMessagePart2));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
-    public void deletePlayer_whenPlayerDoesntGetDeleted_thenShouldThrowException(){
+    public void deletePlayer_whenPlayerDoesNotGetDeleted_thenShouldThrowException(){
         //Given
         long playerId = playerFive.getId();
-        String expectedMessagePart1 = "There was an issue deleting player with id";
+        String expectedMessage = "There was an issue deleting player with id " + playerId + ".";
 
         //When
         Exception exception = assertThrows(WalletException.InternalException.class, () -> playerService.deletePlayer(playerId));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
-    public void deletePlayer_whenAccountDoesntGetDeleted_thenShouldThrowException(){
+    public void deletePlayer_whenAccountDoesNotGetDeleted_thenShouldThrowException(){
         //Given
         long playerId = playerSix.getId();
-        String expectedMessagePart1 = "There was an issue deleting account with id";
+        String expectedMessage = "There was an issue deleting account with id "+ playerId + ".";
 
         //When
         Exception exception = assertThrows(WalletException.InternalException.class, () -> playerService.deletePlayer(playerId));
         String actualMessage = exception.getMessage();
 
         //Then
-        assertTrue(actualMessage.contains(expectedMessagePart1));
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 

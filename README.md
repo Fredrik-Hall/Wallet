@@ -1,2 +1,2 @@
 # Wallet
-A simple Casino Wallet API
+This is a 

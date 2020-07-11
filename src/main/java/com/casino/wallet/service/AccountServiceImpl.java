@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService{
                     .setId(accountDto.getId());
             return AccountMapper.toAccountDto(accountRepository.save(updatedAccount));
         }
-        throw exception(ACCOUNT,ENTITY_NOT_FOUND,String.valueOf(accountDto.getId()));
+        throw exception(ACCOUNT,ENTITY_NOT_FOUND,accountDto.getId().toString());
     }
 
 

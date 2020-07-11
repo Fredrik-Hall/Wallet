@@ -81,7 +81,7 @@ public class TransactionServiceImpl implements TransactionService{
                     if(isSameTransaction(transactionDto,transaction.get())){
                         return TransactionMapper.toTransactionDto(transaction.get()).setAccount(account.get());
                     }
-                    throw exception(TRANSACTION,DUPLICATE_ENTITY, String.valueOf(transactionDto.getTransactionId()));
+                    throw exception(TRANSACTION,DUPLICATE_ENTITY, transactionDto.getTransactionId().toString());
                 } else {
                     if(hasEnoughFunds(transactionDto,account.get())){
                         Account updatedAccount = new Account()
@@ -99,14 +99,14 @@ public class TransactionServiceImpl implements TransactionService{
                         return TransactionMapper.toTransactionDto(transactionRepository.save(newTransaction)).setAccount(accountAfterTransaction);
                     }
                     throw exception(TRANSACTION,NOT_ENOUGH_FUNDS,
-                            String.valueOf(transactionDto.getPlayerId()),
-                            String.valueOf(transactionDto.getAmount()),
+                            transactionDto.getPlayerId().toString(),
+                            transactionDto.getAmount().toString(),
                             String.valueOf(account.get().getAmount()));
                 }
             }
-            throw exception(ACCOUNT,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
+            throw exception(ACCOUNT,ENTITY_NOT_FOUND,transactionDto.getPlayerId().toString());
         }
-        throw exception(PLAYER,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
+        throw exception(PLAYER,ENTITY_NOT_FOUND,transactionDto.getPlayerId().toString());
     }
 
     @Override
@@ -121,7 +121,7 @@ public class TransactionServiceImpl implements TransactionService{
                     if(isSameTransaction(transactionDto,transaction.get())){
                         return TransactionMapper.toTransactionDto(transaction.get()).setAccount(account.get());
                     }
-                    throw exception(TRANSACTION,DUPLICATE_ENTITY, String.valueOf(transactionDto.getTransactionId()));
+                    throw exception(TRANSACTION,DUPLICATE_ENTITY,transactionDto.getTransactionId().toString());
                 } else {
 
                     Account updatedAccount = new Account()
@@ -140,9 +140,9 @@ public class TransactionServiceImpl implements TransactionService{
 
                 }
             }
-            throw exception(ACCOUNT,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
+            throw exception(ACCOUNT,ENTITY_NOT_FOUND,transactionDto.getPlayerId().toString());
         }
-        throw exception(PLAYER,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
+        throw exception(PLAYER,ENTITY_NOT_FOUND,transactionDto.getPlayerId().toString());
     }
 
     @Override
@@ -191,9 +191,9 @@ public class TransactionServiceImpl implements TransactionService{
                         return TransactionMapper.toTransactionDto(transactionRepository.save(newTransaction)).setAccount(account.get());
                     }
             }
-            throw exception(ACCOUNT,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
+            throw exception(ACCOUNT,ENTITY_NOT_FOUND,transactionDto.getPlayerId().toString());
         }
-        throw exception(PLAYER,ENTITY_NOT_FOUND,String.valueOf(transactionDto.getPlayerId()));
+        throw exception(PLAYER,ENTITY_NOT_FOUND,transactionDto.getPlayerId().toString());
     }
 
     // Make sure the player has enough funds in his account.
