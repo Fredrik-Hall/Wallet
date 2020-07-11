@@ -12,7 +12,6 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -33,7 +32,7 @@ public class WalletConfig {
                 .securitySchemes(Collections.singletonList(basicAuthScheme()));
     }
 
-    private SecurityContext securityContext(){
+    private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(Collections.singletonList(basicAuthReference()))
                 .forPaths(PathSelectors.any())
@@ -47,6 +46,7 @@ public class WalletConfig {
     private SecurityReference basicAuthReference() {
         return new SecurityReference("basicAuth", new AuthorizationScope[0]);
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Casino Wallet")

@@ -19,13 +19,13 @@ public class AccountController {
 
     @SuppressWarnings("rawtypes")
     @GetMapping("/{playerId}")
-    public Response GetAccount(@PathVariable Long playerId){
+    public Response GetAccount(@PathVariable Long playerId) {
         return Response.ok().setPayload(accountService.getAccountByPlayerId(playerId));
     }
 
     @PutMapping("/{playerId}")
     public Response UpdateAccount(@PathVariable Long playerId,
-                                  @RequestBody @Valid UpdateAccountRequest updateAccountRequest){
+                                  @RequestBody @Valid UpdateAccountRequest updateAccountRequest) {
 
         AccountDto accountDto = new AccountDto()
                 .setId(playerId)

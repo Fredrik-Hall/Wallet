@@ -16,7 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"rawtypes","unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ExceptionHandling {
@@ -68,9 +68,9 @@ public class ExceptionHandling {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    protected ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request){
+    protected ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
         Response response = Response.badRequest();
-        response.addErrorMsg(ex.getMessage(),ex);
-        return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        response.addErrorMsg(ex.getMessage(), ex);
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 }

@@ -13,6 +13,8 @@ public enum ExceptionType {
 
     String value;
 
-    ExceptionType(String value){this.value = value; }
+    ExceptionType(String value) {
+        this.value = value;
+    }
 
 }

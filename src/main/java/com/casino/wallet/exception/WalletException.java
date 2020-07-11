@@ -11,7 +11,7 @@ public class WalletException {
 
     private static ExceptionConfig exceptionConfig;
 
-    public WalletException(ExceptionConfig exceptionConfig){
+    public WalletException(ExceptionConfig exceptionConfig) {
         WalletException.exceptionConfig = exceptionConfig;
     }
 
@@ -45,7 +45,9 @@ public class WalletException {
     }
 
     public static class NotAllowedException extends RuntimeException {
-        public NotAllowedException(String message) {super(message); }
+        public NotAllowedException(String message) {
+            super(message);
+        }
     }
 
     private static RuntimeException throwException(ExceptionType exceptionType, String messageTemplate, String... args) {
@@ -53,11 +55,11 @@ public class WalletException {
             return new EntityNotFoundException(format(messageTemplate, args));
         } else if (ExceptionType.DUPLICATE_ENTITY.equals(exceptionType)) {
             return new DuplicateEntityException(format(messageTemplate, args));
-        } else if (ExceptionType.INTERNAL_EXCEPTION.equals(exceptionType)){
+        } else if (ExceptionType.INTERNAL_EXCEPTION.equals(exceptionType)) {
             return new InternalException(format(messageTemplate, args));
-        } else if(ExceptionType.NOT_ENOUGH_FUNDS.equals(exceptionType)){
+        } else if (ExceptionType.NOT_ENOUGH_FUNDS.equals(exceptionType)) {
             return new NotEnoughFundsException(format(messageTemplate, args));
-        } else if(ExceptionType.NOT_ALLOWED.equals(exceptionType)){
+        } else if (ExceptionType.NOT_ALLOWED.equals(exceptionType)) {
             return new NotAllowedException(format(messageTemplate, args));
         }
         return new RuntimeException(format(messageTemplate, args));
@@ -70,6 +72,6 @@ public class WalletException {
 
     private static String format(String template, String... args) {
         Optional<String> templateContent = Optional.ofNullable(exceptionConfig.getConfigValue(template));
-        return templateContent.map(s -> MessageFormat.format(s,args)).orElseGet(() -> String.format(template,args));
+        return templateContent.map(s -> MessageFormat.format(s, args)).orElseGet(() -> String.format(template, args));
     }
 }

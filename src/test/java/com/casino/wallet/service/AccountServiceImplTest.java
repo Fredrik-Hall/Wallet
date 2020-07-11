@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AccountServiceImplTest {
@@ -59,7 +60,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void getAccountByPlayerId_whenValidId_thenAccountShouldBeFound(){
+    public void getAccountByPlayerId_whenValidId_thenAccountShouldBeFound() {
 
         //Given
         long playerId = accountOne.getId();
@@ -76,11 +77,11 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void getAccountByPlayerId_whenInvalidId_thenExceptionShouldBeThrown(){
+    public void getAccountByPlayerId_whenInvalidId_thenExceptionShouldBeThrown() {
 
         //Given
         long playerId = thirdAccount.getId();
-        String expectedMessage = "Player with id "+ playerId + " was not found.";
+        String expectedMessage = "Player with id " + playerId + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> accountService.getAccountByPlayerId(playerId));
@@ -91,7 +92,7 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void updateAccount_whenValidId_thenAccountShouldBeFound(){
+    public void updateAccount_whenValidId_thenAccountShouldBeFound() {
 
         //Given
         Mockito.when(accountRepository.save(any(Account.class)))
@@ -110,11 +111,11 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void updateAccount_whenInvalidId_thenExceptionShouldBeThrown(){
+    public void updateAccount_whenInvalidId_thenExceptionShouldBeThrown() {
 
         //Given
         AccountDto accountDto = new AccountDto().setId(thirdAccount.getId());
-        String expectedMessage = "Player with id "+ accountDto.getId() +" was not found.";
+        String expectedMessage = "Player with id " + accountDto.getId() + " was not found.";
 
         //When
         Exception exception = assertThrows(WalletException.EntityNotFoundException.class, () -> accountService.updateAccount(accountDto));

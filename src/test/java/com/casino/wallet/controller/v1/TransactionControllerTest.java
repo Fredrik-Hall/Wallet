@@ -42,13 +42,13 @@ public class TransactionControllerTest {
 
     private final HttpHeaders authHeader = createHeaders();
 
-    HttpHeaders createHeaders(){
+    HttpHeaders createHeaders() {
         return new HttpHeaders() {{
             String auth = "walletuser" + ":" + "password123";
             byte[] encodedAuth = Base64.encodeBase64(
-                    auth.getBytes(StandardCharsets.US_ASCII) );
-            String authHeader = "Basic " + new String( encodedAuth );
-            set( "Authorization", authHeader );
+                    auth.getBytes(StandardCharsets.US_ASCII));
+            String authHeader = "Basic " + new String(encodedAuth);
+            set("Authorization", authHeader);
         }};
     }
 
@@ -76,7 +76,7 @@ public class TransactionControllerTest {
                 .setWithdrawal(false)
                 .setAmount(10.0)
                 .setCreated(Instant.now());
-        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne,transactionDtoTwo);
+        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne, transactionDtoTwo);
 
         Mockito.when(transactionService.getAllTransactions())
                 .thenReturn(transactionDtoList);
@@ -86,27 +86,28 @@ public class TransactionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.[0].id",is(1)))
+                .andExpect(jsonPath("$.payload.[0].id", is(1)))
                 .andExpect(jsonPath("$.payload.[0].playerId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].transactionId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].roundId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].created", is(transactionDtoOne.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.[0].cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.[0].cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.[0].withdrawal", is(true)))
                 .andExpect(jsonPath("$.payload.[0].amount", is(1.0)))
                 .andExpect(jsonPath("$.payload.[0].account.id", is(1)))
                 .andExpect(jsonPath("$.payload.[0].account.amount", is(10.0)))
-                .andExpect(jsonPath("$.payload.[1].id",is(2)))
+                .andExpect(jsonPath("$.payload.[1].id", is(2)))
                 .andExpect(jsonPath("$.payload.[1].playerId", is(1)))
                 .andExpect(jsonPath("$.payload.[1].transactionId", is(2)))
                 .andExpect(jsonPath("$.payload.[1].roundId", is(1)))
                 .andExpect(jsonPath("$.payload.[1].created", is(transactionDtoTwo.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.[1].cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.[1].cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.[1].withdrawal", is(false)))
                 .andExpect(jsonPath("$.payload.[1].amount", is(10.0)))
                 .andExpect(jsonPath("$.payload.[1].account.id", is(1)))
                 .andExpect(jsonPath("$.payload.[1].account.amount", is(20.0)));
     }
+
     @Test
     public void GetTransactions_whenCalledAndNoTransactionsExist_thenShouldReturnNotFound() throws Exception {
         //Given
@@ -120,8 +121,8 @@ public class TransactionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status",is("NOT_FOUND")))
-                .andExpect(jsonPath("$.errors",is("No transactions found.")));
+                .andExpect(jsonPath("$.status", is("NOT_FOUND")))
+                .andExpect(jsonPath("$.errors", is("No transactions found.")));
     }
 
     @Test
@@ -147,7 +148,7 @@ public class TransactionControllerTest {
                 .setWithdrawal(false)
                 .setAmount(10.0)
                 .setCreated(Instant.now());
-        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne,transactionDtoTwo);
+        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne, transactionDtoTwo);
 
         Mockito.when(transactionService.getAllTransactions())
                 .thenReturn(transactionDtoList);
@@ -156,7 +157,8 @@ public class TransactionControllerTest {
         mvc.perform(get("/v1/transaction/history")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
-  }
+    }
+
     //GetTransactions (PlayerId)
     @Test
     public void GetTransactions_playerId_whenCalledCorrectly_thenShouldReturnOK() throws Exception {
@@ -182,32 +184,32 @@ public class TransactionControllerTest {
                 .setWithdrawal(false)
                 .setAmount(10.0)
                 .setCreated(Instant.now());
-        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne,transactionDtoTwo);
+        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne, transactionDtoTwo);
 
         Mockito.when(transactionService.getAllTransactionsByPlayerId(playerId))
                 .thenReturn(transactionDtoList);
 
         //When && Then
-        mvc.perform(get("/v1/transaction/history/player/"+playerId)
+        mvc.perform(get("/v1/transaction/history/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.[0].id",is(1)))
+                .andExpect(jsonPath("$.payload.[0].id", is(1)))
                 .andExpect(jsonPath("$.payload.[0].playerId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].transactionId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].roundId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].created", is(transactionDtoOne.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.[0].cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.[0].cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.[0].withdrawal", is(true)))
                 .andExpect(jsonPath("$.payload.[0].amount", is(1.0)))
                 .andExpect(jsonPath("$.payload.[0].account.id", is(1)))
                 .andExpect(jsonPath("$.payload.[0].account.amount", is(10.0)))
-                .andExpect(jsonPath("$.payload.[1].id",is(2)))
+                .andExpect(jsonPath("$.payload.[1].id", is(2)))
                 .andExpect(jsonPath("$.payload.[1].playerId", is(1)))
                 .andExpect(jsonPath("$.payload.[1].transactionId", is(2)))
                 .andExpect(jsonPath("$.payload.[1].roundId", is(1)))
                 .andExpect(jsonPath("$.payload.[1].created", is(transactionDtoTwo.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.[1].cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.[1].cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.[1].withdrawal", is(false)))
                 .andExpect(jsonPath("$.payload.[1].amount", is(10.0)))
                 .andExpect(jsonPath("$.payload.[1].account.id", is(1)))
@@ -224,12 +226,12 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDtoList);
 
         //When && Then
-        mvc.perform(get("/v1/transaction/history/player/"+playerId)
+        mvc.perform(get("/v1/transaction/history/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status",is("NOT_FOUND")))
-                .andExpect(jsonPath("$.errors",is("No transactions found.")));
+                .andExpect(jsonPath("$.status", is("NOT_FOUND")))
+                .andExpect(jsonPath("$.errors", is("No transactions found.")));
     }
 
     @Test
@@ -256,13 +258,13 @@ public class TransactionControllerTest {
                 .setWithdrawal(false)
                 .setAmount(10.0)
                 .setCreated(Instant.now());
-        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne,transactionDtoTwo);
+        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne, transactionDtoTwo);
 
         Mockito.when(transactionService.getAllTransactionsByPlayerId(playerId))
                 .thenReturn(transactionDtoList);
 
         //When && Then
-        mvc.perform(get("/v1/transaction/history/player/"+playerId)
+        mvc.perform(get("/v1/transaction/history/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
@@ -292,32 +294,32 @@ public class TransactionControllerTest {
                 .setWithdrawal(false)
                 .setAmount(10.0)
                 .setCreated(Instant.now());
-        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne,transactionDtoTwo);
+        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne, transactionDtoTwo);
 
         Mockito.when(transactionService.getAllTransactionsByRoundId(roundId))
                 .thenReturn(transactionDtoList);
 
         //When && Then
-        mvc.perform(get("/v1/transaction/history/round/"+roundId)
+        mvc.perform(get("/v1/transaction/history/round/" + roundId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.[0].id",is(1)))
+                .andExpect(jsonPath("$.payload.[0].id", is(1)))
                 .andExpect(jsonPath("$.payload.[0].playerId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].transactionId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].roundId", is(1)))
                 .andExpect(jsonPath("$.payload.[0].created", is(transactionDtoOne.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.[0].cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.[0].cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.[0].withdrawal", is(true)))
                 .andExpect(jsonPath("$.payload.[0].amount", is(1.0)))
                 .andExpect(jsonPath("$.payload.[0].account.id", is(1)))
                 .andExpect(jsonPath("$.payload.[0].account.amount", is(10.0)))
-                .andExpect(jsonPath("$.payload.[1].id",is(2)))
+                .andExpect(jsonPath("$.payload.[1].id", is(2)))
                 .andExpect(jsonPath("$.payload.[1].playerId", is(1)))
                 .andExpect(jsonPath("$.payload.[1].transactionId", is(2)))
                 .andExpect(jsonPath("$.payload.[1].roundId", is(1)))
                 .andExpect(jsonPath("$.payload.[1].created", is(transactionDtoTwo.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.[1].cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.[1].cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.[1].withdrawal", is(false)))
                 .andExpect(jsonPath("$.payload.[1].amount", is(10.0)))
                 .andExpect(jsonPath("$.payload.[1].account.id", is(1)))
@@ -334,12 +336,12 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDtoList);
 
         //When && Then
-        mvc.perform(get("/v1/transaction/history/round/"+roundId)
+        mvc.perform(get("/v1/transaction/history/round/" + roundId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status",is("NOT_FOUND")))
-                .andExpect(jsonPath("$.errors",is("No transactions found.")));
+                .andExpect(jsonPath("$.status", is("NOT_FOUND")))
+                .andExpect(jsonPath("$.errors", is("No transactions found.")));
     }
 
     @Test
@@ -366,13 +368,13 @@ public class TransactionControllerTest {
                 .setWithdrawal(false)
                 .setAmount(10.0)
                 .setCreated(Instant.now());
-        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne,transactionDtoTwo);
+        List<TransactionDto> transactionDtoList = Arrays.asList(transactionDtoOne, transactionDtoTwo);
 
         Mockito.when(transactionService.getAllTransactionsByRoundId(roundId))
                 .thenReturn(transactionDtoList);
 
         //When && Then
-        mvc.perform(get("/v1/transaction/history/round/"+roundId)
+        mvc.perform(get("/v1/transaction/history/round/" + roundId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
@@ -397,16 +399,16 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(get("/v1/transaction/history/transaction/"+transactionId)
+        mvc.perform(get("/v1/transaction/history/transaction/" + transactionId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.id",is(1)))
+                .andExpect(jsonPath("$.payload.id", is(1)))
                 .andExpect(jsonPath("$.payload.playerId", is(1)))
                 .andExpect(jsonPath("$.payload.transactionId", is(1)))
                 .andExpect(jsonPath("$.payload.roundId", is(1)))
                 .andExpect(jsonPath("$.payload.created", is(transactionDto.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.withdrawal", is(true)))
                 .andExpect(jsonPath("$.payload.amount", is(1.0)))
                 .andExpect(jsonPath("$.payload.account.id", is(1)))
@@ -432,12 +434,12 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(get("/v1/transaction/history/transaction/"+transactionId)
+        mvc.perform(get("/v1/transaction/history/transaction/" + transactionId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
-     }
+    }
 
-     //Withdraw
+    //Withdraw
     @Test
     public void Withdraw_whenCalledCorrectly_thenShouldReturnOK() throws Exception {
         //Given
@@ -461,17 +463,17 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/withdraw/"+playerId)
+        mvc.perform(post("/v1/transaction/withdraw/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(withdrawRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.id",is(1)))
+                .andExpect(jsonPath("$.payload.id", is(1)))
                 .andExpect(jsonPath("$.payload.playerId", is(1)))
                 .andExpect(jsonPath("$.payload.transactionId", is(1)))
                 .andExpect(jsonPath("$.payload.roundId", is(1)))
                 .andExpect(jsonPath("$.payload.created", is(transactionDto.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.withdrawal", is(true)))
                 .andExpect(jsonPath("$.payload.amount", is(1.0)))
                 .andExpect(jsonPath("$.payload.account.id", is(1)))
@@ -501,13 +503,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/withdraw/"+playerId)
+        mvc.perform(post("/v1/transaction/withdraw/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(withdrawRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[TransactionId cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[TransactionId cannot be null.]")));
     }
 
     @Test
@@ -533,13 +535,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/withdraw/"+playerId)
+        mvc.perform(post("/v1/transaction/withdraw/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(withdrawRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[RoundId cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[RoundId cannot be null.]")));
     }
 
     @Test
@@ -565,13 +567,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/withdraw/"+playerId)
+        mvc.perform(post("/v1/transaction/withdraw/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(withdrawRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Amount cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Amount cannot be null.]")));
     }
 
     @Test
@@ -597,13 +599,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/withdraw/"+playerId)
+        mvc.perform(post("/v1/transaction/withdraw/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(withdrawRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[The amount must be positive.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[The amount must be positive.]")));
     }
 
     @Test
@@ -629,13 +631,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/withdraw/"+playerId)
+        mvc.perform(post("/v1/transaction/withdraw/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(withdrawRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[The amount must be positive.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[The amount must be positive.]")));
     }
 
     @Test
@@ -661,7 +663,7 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/withdraw/"+playerId)
+        mvc.perform(post("/v1/transaction/withdraw/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(withdrawRequest)))
                 .andExpect(status().isUnauthorized());
@@ -691,17 +693,17 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/deposit/"+playerId)
+        mvc.perform(post("/v1/transaction/deposit/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(depositRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.id",is(1)))
+                .andExpect(jsonPath("$.payload.id", is(1)))
                 .andExpect(jsonPath("$.payload.playerId", is(1)))
                 .andExpect(jsonPath("$.payload.transactionId", is(1)))
                 .andExpect(jsonPath("$.payload.roundId", is(1)))
                 .andExpect(jsonPath("$.payload.created", is(transactionDto.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.cancelled",is(false)))
+                .andExpect(jsonPath("$.payload.cancelled", is(false)))
                 .andExpect(jsonPath("$.payload.withdrawal", is(false)))
                 .andExpect(jsonPath("$.payload.amount", is(1.0)))
                 .andExpect(jsonPath("$.payload.account.id", is(1)))
@@ -731,13 +733,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/deposit/"+playerId)
+        mvc.perform(post("/v1/transaction/deposit/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(depositRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[TransactionId cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[TransactionId cannot be null.]")));
     }
 
     @Test
@@ -763,13 +765,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/deposit/"+playerId)
+        mvc.perform(post("/v1/transaction/deposit/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(depositRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[RoundId cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[RoundId cannot be null.]")));
     }
 
     @Test
@@ -795,13 +797,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/deposit/"+playerId)
+        mvc.perform(post("/v1/transaction/deposit/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(depositRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Amount cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Amount cannot be null.]")));
     }
 
     @Test
@@ -827,13 +829,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/deposit/"+playerId)
+        mvc.perform(post("/v1/transaction/deposit/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(depositRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[The amount must be positive.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[The amount must be positive.]")));
     }
 
     @Test
@@ -859,13 +861,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/deposit/"+playerId)
+        mvc.perform(post("/v1/transaction/deposit/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(depositRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[The amount must be positive.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[The amount must be positive.]")));
     }
 
     @Test
@@ -891,7 +893,7 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(post("/v1/transaction/deposit/"+playerId)
+        mvc.perform(post("/v1/transaction/deposit/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(depositRequest)))
                 .andExpect(status().isUnauthorized());
@@ -921,17 +923,17 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(put("/v1/transaction/cancel/"+playerId)
+        mvc.perform(put("/v1/transaction/cancel/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(cancelRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.id",is(1)))
+                .andExpect(jsonPath("$.payload.id", is(1)))
                 .andExpect(jsonPath("$.payload.playerId", is(1)))
                 .andExpect(jsonPath("$.payload.transactionId", is(1)))
                 .andExpect(jsonPath("$.payload.roundId", is(1)))
                 .andExpect(jsonPath("$.payload.created", is(transactionDto.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.cancelled",is(true)))
+                .andExpect(jsonPath("$.payload.cancelled", is(true)))
                 .andExpect(jsonPath("$.payload.withdrawal", is(true)))
                 .andExpect(jsonPath("$.payload.amount", is(1.0)))
                 .andExpect(jsonPath("$.payload.account.id", is(1)))
@@ -961,13 +963,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(put("/v1/transaction/cancel/"+playerId)
+        mvc.perform(put("/v1/transaction/cancel/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(cancelRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[TransactionId cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[TransactionId cannot be null.]")));
     }
 
     @Test
@@ -993,13 +995,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(put("/v1/transaction/cancel/"+playerId)
+        mvc.perform(put("/v1/transaction/cancel/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(cancelRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[RoundId cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[RoundId cannot be null.]")));
     }
 
     @Test
@@ -1025,13 +1027,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(put("/v1/transaction/cancel/"+playerId)
+        mvc.perform(put("/v1/transaction/cancel/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(cancelRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Amount cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Amount cannot be null.]")));
     }
 
     @Test
@@ -1057,13 +1059,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(put("/v1/transaction/cancel/"+playerId)
+        mvc.perform(put("/v1/transaction/cancel/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(cancelRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[The amount must be positive.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[The amount must be positive.]")));
     }
 
     @Test
@@ -1089,13 +1091,13 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(put("/v1/transaction/cancel/"+playerId)
+        mvc.perform(put("/v1/transaction/cancel/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(cancelRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[The amount must be positive.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[The amount must be positive.]")));
     }
 
     @Test
@@ -1121,7 +1123,7 @@ public class TransactionControllerTest {
                 .thenReturn(transactionDto);
 
         //When && Then
-        mvc.perform(put("/v1/transaction/cancel/"+playerId)
+        mvc.perform(put("/v1/transaction/cancel/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(cancelRequest)))
                 .andExpect(status().isUnauthorized());

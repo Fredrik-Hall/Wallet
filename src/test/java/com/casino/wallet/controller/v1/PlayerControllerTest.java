@@ -40,13 +40,13 @@ public class PlayerControllerTest {
 
     private final HttpHeaders authHeader = createHeaders();
 
-    HttpHeaders createHeaders(){
+    HttpHeaders createHeaders() {
         return new HttpHeaders() {{
             String auth = "walletuser" + ":" + "password123";
             byte[] encodedAuth = Base64.encodeBase64(
-                    auth.getBytes(StandardCharsets.US_ASCII) );
-            String authHeader = "Basic " + new String( encodedAuth );
-            set( "Authorization", authHeader );
+                    auth.getBytes(StandardCharsets.US_ASCII));
+            String authHeader = "Basic " + new String(encodedAuth);
+            set("Authorization", authHeader);
         }};
     }
 
@@ -74,7 +74,7 @@ public class PlayerControllerTest {
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(registerPlayerRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.email",is(playerDto.getEmail())))
+                .andExpect(jsonPath("$.payload.email", is(playerDto.getEmail())))
                 .andExpect(jsonPath("$.payload.firstName", is(playerDto.getFirstName())))
                 .andExpect(jsonPath("$.payload.lastName", is(playerDto.getLastName())))
                 .andExpect(jsonPath("$.payload.id", is(1)))
@@ -104,8 +104,8 @@ public class PlayerControllerTest {
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(registerPlayerRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[First name cannot be empty.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[First name cannot be empty.]")));
     }
 
     @Test
@@ -131,8 +131,8 @@ public class PlayerControllerTest {
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(registerPlayerRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Last name cannot be empty.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Last name cannot be empty.]")));
     }
 
     @Test
@@ -158,8 +158,8 @@ public class PlayerControllerTest {
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(registerPlayerRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Email name cannot be empty.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Email name cannot be empty.]")));
     }
 
     @Test
@@ -185,8 +185,8 @@ public class PlayerControllerTest {
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(registerPlayerRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Email must be valid.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Email must be valid.]")));
     }
 
     @Test
@@ -229,7 +229,7 @@ public class PlayerControllerTest {
                 .setLastName("Testsson2")
                 .setId(2L)
                 .setCreated(Instant.now());
-        List<PlayerDto> playerDtoList = Arrays.asList(playerDtoOne,playerDtoTwo);
+        List<PlayerDto> playerDtoList = Arrays.asList(playerDtoOne, playerDtoTwo);
 
         Mockito.when(playerService.getAllPlayers())
                 .thenReturn(playerDtoList);
@@ -238,12 +238,12 @@ public class PlayerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.[0].email",is(playerDtoOne.getEmail())))
+                .andExpect(jsonPath("$.payload.[0].email", is(playerDtoOne.getEmail())))
                 .andExpect(jsonPath("$.payload.[0].firstName", is(playerDtoOne.getFirstName())))
                 .andExpect(jsonPath("$.payload.[0].lastName", is(playerDtoOne.getLastName())))
                 .andExpect(jsonPath("$.payload.[0].id", is(1)))
                 .andExpect(jsonPath("$.payload.[0].created", is(playerDtoOne.getCreated().toString())))
-                .andExpect(jsonPath("$.payload.[1].email",is(playerDtoTwo.getEmail())))
+                .andExpect(jsonPath("$.payload.[1].email", is(playerDtoTwo.getEmail())))
                 .andExpect(jsonPath("$.payload.[1].firstName", is(playerDtoTwo.getFirstName())))
                 .andExpect(jsonPath("$.payload.[1].lastName", is(playerDtoTwo.getLastName())))
                 .andExpect(jsonPath("$.payload.[1].id", is(2)))
@@ -262,8 +262,8 @@ public class PlayerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status",is("NOT_FOUND")))
-                .andExpect(jsonPath("$.errors",is("No players found.")));
+                .andExpect(jsonPath("$.status", is("NOT_FOUND")))
+                .andExpect(jsonPath("$.errors", is("No players found.")));
 
     }
 
@@ -282,7 +282,7 @@ public class PlayerControllerTest {
                 .setLastName("Testsson2")
                 .setId(2L)
                 .setCreated(Instant.now());
-        List<PlayerDto> playerDtoList = Arrays.asList(playerDtoOne,playerDtoTwo);
+        List<PlayerDto> playerDtoList = Arrays.asList(playerDtoOne, playerDtoTwo);
 
         Mockito.when(playerService.getAllPlayers())
                 .thenReturn(playerDtoList);
@@ -290,7 +290,7 @@ public class PlayerControllerTest {
         mvc.perform(get("/v1/player/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
- }
+    }
 
     //GetPlayer
     @Test
@@ -307,11 +307,11 @@ public class PlayerControllerTest {
                 .thenReturn(playerDto);
 
         //When && Then
-        mvc.perform(get("/v1/player/"+playerId)
+        mvc.perform(get("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.email",is(playerDto.getEmail())))
+                .andExpect(jsonPath("$.payload.email", is(playerDto.getEmail())))
                 .andExpect(jsonPath("$.payload.firstName", is(playerDto.getFirstName())))
                 .andExpect(jsonPath("$.payload.lastName", is(playerDto.getLastName())))
                 .andExpect(jsonPath("$.payload.id", is(1)))
@@ -332,7 +332,7 @@ public class PlayerControllerTest {
                 .thenReturn(playerDto);
 
         //When && Then
-        mvc.perform(get("/v1/player/"+playerId)
+        mvc.perform(get("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
@@ -356,12 +356,12 @@ public class PlayerControllerTest {
                 .thenReturn(playerDto);
 
         //When && Then
-        mvc.perform(put("/v1/player/"+playerId)
+        mvc.perform(put("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updatePlayerRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.email",is(playerDto.getEmail())))
+                .andExpect(jsonPath("$.payload.email", is(playerDto.getEmail())))
                 .andExpect(jsonPath("$.payload.firstName", is(playerDto.getFirstName())))
                 .andExpect(jsonPath("$.payload.lastName", is(playerDto.getLastName())))
                 .andExpect(jsonPath("$.payload.id", is(1)))
@@ -386,13 +386,13 @@ public class PlayerControllerTest {
                 .thenReturn(playerDto);
 
         //When && Then
-        mvc.perform(put("/v1/player/"+playerId)
+        mvc.perform(put("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updatePlayerRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[First name cannot be empty.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[First name cannot be empty.]")));
     }
 
     @Test
@@ -413,13 +413,13 @@ public class PlayerControllerTest {
                 .thenReturn(playerDto);
 
         //When && Then
-        mvc.perform(put("/v1/player/"+playerId)
+        mvc.perform(put("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updatePlayerRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Last name cannot be empty.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Last name cannot be empty.]")));
     }
 
     @Test
@@ -440,13 +440,13 @@ public class PlayerControllerTest {
                 .thenReturn(playerDto);
 
         //When && Then
-        mvc.perform(put("/v1/player/"+playerId)
+        mvc.perform(put("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updatePlayerRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Email cannot be empty.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Email cannot be empty.]")));
     }
 
     @Test
@@ -467,13 +467,13 @@ public class PlayerControllerTest {
                 .thenReturn(playerDto);
 
         //When && Then
-        mvc.perform(put("/v1/player/"+playerId)
+        mvc.perform(put("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updatePlayerRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Email must be valid.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Email must be valid.]")));
     }
 
     @Test
@@ -494,7 +494,7 @@ public class PlayerControllerTest {
                 .thenReturn(playerDto);
 
         //When && Then
-        mvc.perform(put("/v1/player/"+playerId)
+        mvc.perform(put("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(updatePlayerRequest)))
                 .andExpect(status().isUnauthorized());
@@ -516,11 +516,11 @@ public class PlayerControllerTest {
 
         //When && Then
 
-        mvc.perform(delete("/v1/player/"+playerId)
+        mvc.perform(delete("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.email",is(playerDto.getEmail())))
+                .andExpect(jsonPath("$.payload.email", is(playerDto.getEmail())))
                 .andExpect(jsonPath("$.payload.firstName", is(playerDto.getFirstName())))
                 .andExpect(jsonPath("$.payload.lastName", is(playerDto.getLastName())))
                 .andExpect(jsonPath("$.payload.id", is(1)))
@@ -542,8 +542,8 @@ public class PlayerControllerTest {
 
         //When && Then
 
-        mvc.perform(delete("/v1/player/"+playerId)
+        mvc.perform(delete("/v1/player/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
-     }
+    }
 }

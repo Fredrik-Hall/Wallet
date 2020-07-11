@@ -20,49 +20,55 @@ public class Response<T> {
     private T payload;
     private Object errors;
 
-    public static <T> Response<T> ok(){
+    public static <T> Response<T> ok() {
         Response<T> response = new Response<>();
         response.setStatus(Status.OK);
         return response;
     }
 
-    public static <T> Response<T> badRequest(){
+    public static <T> Response<T> badRequest() {
         Response<T> response = new Response<>();
         response.setStatus(Status.BAD_REQUEST);
         return response;
     }
 
-    public static <T> Response<T> validationException(){
+    public static <T> Response<T> validationException() {
         Response<T> response = new Response<>();
         response.setStatus(Status.VALIDATION_EXCEPTION);
         return response;
     }
-    public static <T> Response<T> notEnoughFunds(){
+
+    public static <T> Response<T> notEnoughFunds() {
         Response<T> response = new Response<>();
         response.setStatus(Status.NOT_ENOUGH_FUNDS);
         return response;
     }
-    public static <T> Response<T> internal(){
+
+    public static <T> Response<T> internal() {
         Response<T> response = new Response<>();
         response.setStatus(Status.INTERNAL);
         return response;
     }
-    public static <T> Response<T> notFound(){
+
+    public static <T> Response<T> notFound() {
         Response<T> response = new Response<>();
         response.setStatus(Status.NOT_FOUND);
         return response;
     }
-    public static <T> Response<T> duplicateEntry(){
+
+    public static <T> Response<T> duplicateEntry() {
         Response<T> response = new Response<>();
         response.setStatus(Status.DUPLICATE_ENTRY);
         return response;
     }
-    public static <T> Response<T> notAllowed(){
+
+    public static <T> Response<T> notAllowed() {
         Response<T> response = new Response<>();
         response.setStatus(Status.NOT_ALLOWED);
         return response;
     }
-    public void addErrorMsg(String errorMsg, Exception ex){
+
+    public void addErrorMsg(String errorMsg, Exception ex) {
         ResponseError error = new ResponseError()
                 .setMessage(errorMsg)
                 .setDetails(ex.getMessage())
@@ -70,7 +76,7 @@ public class Response<T> {
         setErrors(error);
     }
 
-    public enum Status{
-        OK, BAD_REQUEST, NOT_ALLOWED,VALIDATION_EXCEPTION, NOT_ENOUGH_FUNDS, INTERNAL, NOT_FOUND, DUPLICATE_ENTRY
+    public enum Status {
+        OK, BAD_REQUEST, NOT_ALLOWED, VALIDATION_EXCEPTION, NOT_ENOUGH_FUNDS, INTERNAL, NOT_FOUND, DUPLICATE_ENTRY
     }
 }
