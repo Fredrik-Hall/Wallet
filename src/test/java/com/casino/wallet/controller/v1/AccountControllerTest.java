@@ -25,6 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 @RunWith(SpringRunner.class)
 @WebMvcTest(AccountController.class)
 public class AccountControllerTest {
@@ -47,7 +48,7 @@ public class AccountControllerTest {
                 .thenReturn(accountDto);
 
         //When && Then
-        mvc.perform(get("/v1/account/"+playerId)
+        mvc.perform(get("/v1/account/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader))
                 .andExpect(status().isOk())
@@ -64,7 +65,7 @@ public class AccountControllerTest {
                 .thenReturn(accountDto);
 
         //When && Then
-        mvc.perform(get("/v1/account/"+playerId)
+        mvc.perform(get("/v1/account/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
@@ -83,12 +84,12 @@ public class AccountControllerTest {
                 .thenReturn(accountDto);
 
         //When && Then
-        mvc.perform(put("/v1/account/"+playerId)
+        mvc.perform(put("/v1/account/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updateAccountRequest)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.id",is(1)))
+                .andExpect(jsonPath("$.payload.id", is(1)))
                 .andExpect(jsonPath("$.payload.amount", is(10.0)));
     }
 
@@ -105,13 +106,13 @@ public class AccountControllerTest {
                 .thenReturn(accountDto);
 
         //When && Then
-        mvc.perform(put("/v1/account/"+playerId)
+        mvc.perform(put("/v1/account/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updateAccountRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Amount must be positive or zero.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Amount must be positive or zero.]")));
     }
 
     @Test
@@ -127,13 +128,13 @@ public class AccountControllerTest {
                 .thenReturn(accountDto);
 
         //When && Then
-        mvc.perform(put("/v1/account/"+playerId)
+        mvc.perform(put("/v1/account/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(authHeader)
                 .content(new ObjectMapper().writeValueAsBytes(updateAccountRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status",is("VALIDATION_EXCEPTION")))
-                .andExpect(jsonPath("$.errors.message",is("[Amount cannot be null.]")));
+                .andExpect(jsonPath("$.status", is("VALIDATION_EXCEPTION")))
+                .andExpect(jsonPath("$.errors.message", is("[Amount cannot be null.]")));
     }
 
     @Test
@@ -149,20 +150,20 @@ public class AccountControllerTest {
                 .thenReturn(accountDto);
 
         //When && Then
-        mvc.perform(put("/v1/account/"+playerId)
+        mvc.perform(put("/v1/account/" + playerId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(updateAccountRequest)))
                 .andExpect(status().isUnauthorized());
     }
 
 
-    HttpHeaders createHeaders(){
+    HttpHeaders createHeaders() {
         return new HttpHeaders() {{
             String auth = "walletuser" + ":" + "password123";
             byte[] encodedAuth = Base64.encodeBase64(
-                    auth.getBytes(StandardCharsets.US_ASCII) );
-            String authHeader = "Basic " + new String( encodedAuth );
-            set( "Authorization", authHeader );
+                    auth.getBytes(StandardCharsets.US_ASCII));
+            String authHeader = "Basic " + new String(encodedAuth);
+            set("Authorization", authHeader);
         }};
     }
 }

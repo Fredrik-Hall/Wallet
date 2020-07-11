@@ -14,11 +14,11 @@ public interface TransactionService {
 
     TransactionDto getTransaction(Long transactionId);
 
-    TransactionDto withdraw (TransactionDto transactionDto);
+    TransactionDto withdraw(TransactionDto transactionDto);
 
-    TransactionDto deposit (TransactionDto transactionDto);
+    TransactionDto deposit(TransactionDto transactionDto);
 
-    TransactionDto cancel (TransactionDto transactionDto);
+    TransactionDto cancel(TransactionDto transactionDto);
 
 
 }

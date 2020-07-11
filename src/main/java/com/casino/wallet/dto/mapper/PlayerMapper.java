@@ -4,7 +4,7 @@ import com.casino.wallet.dto.model.PlayerDto;
 import com.casino.wallet.model.player.Player;
 
 public class PlayerMapper {
-    public static PlayerDto toPlayerDto(Player player){
+    public static PlayerDto toPlayerDto(Player player) {
         return new PlayerDto()
                 .setCreated(player.getCreated())
                 .setEmail(player.getEmail())

@@ -116,12 +116,12 @@ public class TransactionServiceImplTest {
             .setId(7)
             .setCreated(Instant.now());
 
-    private final List<Transaction> transactionList = Arrays.asList(bet,win,cancelledBet,win2);
-    private final List<Transaction> transactionListRoundOne = Arrays.asList(bet,win);
-    private final List<Transaction> transactionListPlayerTwo = Arrays.asList(cancelledBet,win2);
+    private final List<Transaction> transactionList = Arrays.asList(bet, win, cancelledBet, win2);
+    private final List<Transaction> transactionListRoundOne = Arrays.asList(bet, win);
+    private final List<Transaction> transactionListPlayerTwo = Arrays.asList(cancelledBet, win2);
 
     @Before
-    public void setUp(){
+    public void setUp() {
 
         //Empty Responses
         Optional<Account> emptyAccount = Optional.empty();
@@ -192,7 +192,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void getAllTransactions_whenCalled_thenAListOfTransactionsShouldBeReturned(){
+    public void getAllTransactions_whenCalled_thenAListOfTransactionsShouldBeReturned() {
         //Given
         long expectedTransactionId = bet.getId();
         double expectedAmount = bet.getAmount();
@@ -219,7 +219,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void getAllTransactionsByPlayerId_whenCalled_thenAListOfTransactionsShouldBeReturned(){
+    public void getAllTransactionsByPlayerId_whenCalled_thenAListOfTransactionsShouldBeReturned() {
         //Given
         long expectedTransactionId = cancelledBet.getId();
         double expectedAmount = cancelledBet.getAmount();
@@ -246,7 +246,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void getAllTransactionsByPlayerId_whenPlayerDoesntExist_thenShouldThrowException(){
+    public void getAllTransactionsByPlayerId_whenPlayerDoesntExist_thenShouldThrowException() {
         //Given
         long playerId = playerThree.getId();
         String expectedMessage = "Player with id " + playerId + " was not found.";
@@ -260,7 +260,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void getAllTransactionsByRoundId_whenCalled_thenAListOfTransactionsShouldBeReturned(){
+    public void getAllTransactionsByRoundId_whenCalled_thenAListOfTransactionsShouldBeReturned() {
         //Given
         long expectedTransactionId = bet.getId();
         double expectedAmount = bet.getAmount();
@@ -286,7 +286,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void getTransaction_whenCalled_thenShouldReturnSingleTransaction(){
+    public void getTransaction_whenCalled_thenShouldReturnSingleTransaction() {
         //Given
         long expectedTransactionId = bet.getId();
         double expectedAmount = bet.getAmount();
@@ -306,11 +306,12 @@ public class TransactionServiceImplTest {
         assertThat(transaction.getRoundId())
                 .isEqualTo(expectedRoundId);
     }
+
     @Test
-    public void getTransaction_whenTransactionDoesntExist_thenShouldThrowException(){
+    public void getTransaction_whenTransactionDoesntExist_thenShouldThrowException() {
         //Given
         long transactionId = nonExisting.getId();
-        String expectedMessage = "Transaction with id "+ transactionId + " was not found.";
+        String expectedMessage = "Transaction with id " + transactionId + " was not found.";
 
 
         //When
@@ -322,7 +323,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void withdraw_whenCalled_thenReturnNewTransaction(){
+    public void withdraw_whenCalled_thenReturnNewTransaction() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(bet2.getId())
@@ -358,7 +359,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void withdraw_whenExactTransactionExists_thenReturnThatTransaction(){
+    public void withdraw_whenExactTransactionExists_thenReturnThatTransaction() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(bet.getId())
@@ -389,7 +390,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void withdraw_whenNonExistentPlayer_thenShouldThrowException(){
+    public void withdraw_whenNonExistentPlayer_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerThree.getId());
@@ -404,7 +405,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void withdraw_whenNonExistentAccount_thenShouldThrowException(){
+    public void withdraw_whenNonExistentAccount_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerFour.getId());
@@ -420,7 +421,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void withdraw_whenTransactionExistsForOtherPlayer_thenShouldThrowException(){
+    public void withdraw_whenTransactionExistsForOtherPlayer_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(bet2.getId())
@@ -440,13 +441,13 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void withdraw_whenNotEnoughMoney_thenShouldThrowException(){
+    public void withdraw_whenNotEnoughMoney_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(bet2.getId())
                 .setPlayerId(bet2.getPlayerId())
                 .setRoundId(bet2.getRoundId())
-                .setAmount(playerOneAccount.getAmount()+1);
+                .setAmount(playerOneAccount.getAmount() + 1);
         String expectedMessage = "Player " + transactionDto.getPlayerId() + " does not have enough funds. Request amount " + transactionDto.getAmount() + " is larger than Account amount " + playerOneAccount.getAmount() + ".";
 
         //When
@@ -458,7 +459,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void deposit_whenCalled_thenReturnNewTransaction(){
+    public void deposit_whenCalled_thenReturnNewTransaction() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(win.getId())
@@ -494,7 +495,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void deposit_whenExactTransactionExists_thenReturnThatTransaction(){
+    public void deposit_whenExactTransactionExists_thenReturnThatTransaction() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(win3.getId())
@@ -508,7 +509,7 @@ public class TransactionServiceImplTest {
         double expectedAccountAmount = playerOneAccount.getAmount();
 
         //When
-        TransactionDto transaction = transactionService.withdraw(transactionDto);
+        TransactionDto transaction = transactionService.deposit(transactionDto);
 
         //Then
         assertThat(transaction.getPlayerId())
@@ -523,8 +524,9 @@ public class TransactionServiceImplTest {
                 .isEqualTo(expectedAccountAmount);
 
     }
+
     @Test
-    public void deposit_whenNonExistentPlayer_thenShouldThrowException(){
+    public void deposit_whenNonExistentPlayer_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerThree.getId());
@@ -539,7 +541,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void deposit_whenNonExistentAccount_thenShouldThrowException(){
+    public void deposit_whenNonExistentAccount_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerFour.getId());
@@ -554,7 +556,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void deposit_whenTransactionExistsForOtherPlayer_thenShouldThrowException(){
+    public void deposit_whenTransactionExistsForOtherPlayer_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(win2.getId())
@@ -574,7 +576,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void cancel_whenCancellingARegularBet_thenShouldReturnTransaction(){
+    public void cancel_whenCancellingARegularBet_thenShouldReturnTransaction() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(bet.getId())
@@ -608,7 +610,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void cancel_whenCancellingAnAlreadyCancelledBet_thenShouldReturnTransaction(){
+    public void cancel_whenCancellingAnAlreadyCancelledBet_thenShouldReturnTransaction() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(cancelledBet.getId())
@@ -640,7 +642,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void cancel_whenCancellingANonExistingBet_thenShouldReturnTransaction(){
+    public void cancel_whenCancellingANonExistingBet_thenShouldReturnTransaction() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(nonExisting.getId())
@@ -675,7 +677,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void cancel_whenNonExistentPlayer_thenShouldThrowException(){
+    public void cancel_whenNonExistentPlayer_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerThree.getId());
@@ -690,7 +692,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void cancel_whenNonExistentAccount_thenShouldThrowException(){
+    public void cancel_whenNonExistentAccount_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setPlayerId(playerFour.getId());
@@ -705,7 +707,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void cancel_whenCancellingADeposit_thenShouldThrowException(){
+    public void cancel_whenCancellingADeposit_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(win3.getId())
@@ -723,7 +725,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    public void cancel_whenCancellingAnotherTransactionThenTheOneIntended_thenShouldThrowException(){
+    public void cancel_whenCancellingAnotherTransactionThenTheOneIntended_thenShouldThrowException() {
         //Given
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(bet2.getId())

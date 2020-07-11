@@ -19,7 +19,7 @@ import java.time.Instant;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-@Table (name = "Players")
+@Table(name = "Players")
 public class Player {
 
     @Id

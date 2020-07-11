@@ -20,7 +20,7 @@ public class PlayerController {
     private PlayerService playerService;
 
     @PostMapping("/")
-    public Response RegisterPlayer(@RequestBody @Valid RegisterPlayerRequest registerPlayerRequest){
+    public Response RegisterPlayer(@RequestBody @Valid RegisterPlayerRequest registerPlayerRequest) {
         PlayerDto playerDto = new PlayerDto()
                 .setEmail(registerPlayerRequest.getEmail())
                 .setFirstName(registerPlayerRequest.getFirstName())
@@ -30,22 +30,22 @@ public class PlayerController {
     }
 
     @GetMapping("/")
-    public Response GetPlayers(){
-        List <PlayerDto> playerDtos = playerService.getAllPlayers();
-        if (!playerDtos.isEmpty()){
+    public Response GetPlayers() {
+        List<PlayerDto> playerDtos = playerService.getAllPlayers();
+        if (!playerDtos.isEmpty()) {
             return Response.ok().setPayload(playerDtos);
         }
         return Response.notFound().setErrors("No players found.");
     }
 
     @GetMapping("/{playerId}")
-    public Response GetPlayer(@PathVariable Long playerId){
+    public Response GetPlayer(@PathVariable Long playerId) {
         return Response.ok().setPayload(playerService.getPlayerById(playerId));
 
     }
 
     @PutMapping("/{playerId}")
-    public Response UpdatePlayer(@RequestBody @Valid UpdatePlayerRequest updatePlayerRequest, @PathVariable Long playerId){
+    public Response UpdatePlayer(@RequestBody @Valid UpdatePlayerRequest updatePlayerRequest, @PathVariable Long playerId) {
         PlayerDto playerDto = new PlayerDto()
                 .setEmail(updatePlayerRequest.getEmail())
                 .setFirstName(updatePlayerRequest.getFirstName())
@@ -56,7 +56,7 @@ public class PlayerController {
     }
 
     @DeleteMapping("/{playerId}")
-    public Response DeletePlayer(@PathVariable Long playerId){
+    public Response DeletePlayer(@PathVariable Long playerId) {
         return Response.ok().setPayload(playerService.deletePlayer(playerId));
     }
 }

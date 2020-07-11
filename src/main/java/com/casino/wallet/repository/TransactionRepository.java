@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
     List<Transaction> findByPlayerId(Long playerId);
+
     List<Transaction> findByRoundId(Long roundId);
+
     Optional<Transaction> findByTransactionId(Long transactionId);
 }

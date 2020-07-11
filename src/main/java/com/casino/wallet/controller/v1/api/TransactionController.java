@@ -27,7 +27,7 @@ public class TransactionController {
     public Response GetTransactions() {
 
         List<TransactionDto> transactionDtos = transactionService.getAllTransactions();
-        if (!transactionDtos.isEmpty()){
+        if (!transactionDtos.isEmpty()) {
             return Response.ok().setPayload(transactionDtos);
         }
         return Response.notFound().setErrors("No transactions found.");
@@ -36,21 +36,21 @@ public class TransactionController {
     @GetMapping("/history/player/{playerId}")
     public Response GetTransactions(@PathVariable Long playerId) {
         List<TransactionDto> transactionDtos = transactionService.getAllTransactionsByPlayerId(playerId);
-        if (!transactionDtos.isEmpty()){
+        if (!transactionDtos.isEmpty()) {
             return Response.ok().setPayload(transactionDtos);
         }
         return Response.notFound().setErrors("No transactions found.");
     }
 
     @GetMapping("/history/transaction/{transactionId}")
-    public Response GetTransaction(@PathVariable Long transactionId ) {
+    public Response GetTransaction(@PathVariable Long transactionId) {
         return Response.ok().setPayload(transactionService.getTransaction(transactionId));
     }
 
     @GetMapping("/history/round/{roundId}")
-    public Response GetTransactionsByRound(@PathVariable Long roundId ) {
+    public Response GetTransactionsByRound(@PathVariable Long roundId) {
         List<TransactionDto> transactionDtos = transactionService.getAllTransactionsByRoundId(roundId);
-        if (!transactionDtos.isEmpty()){
+        if (!transactionDtos.isEmpty()) {
             return Response.ok().setPayload(transactionDtos);
         }
         return Response.notFound().setErrors("No transactions found.");
@@ -83,7 +83,7 @@ public class TransactionController {
 
     @PutMapping("/cancel/{playerId}")
     public Response Cancel(@PathVariable Long playerId,
-                            @RequestBody @Valid CancelRequest cancelRequest){
+                           @RequestBody @Valid CancelRequest cancelRequest) {
         TransactionDto transactionDto = new TransactionDto()
                 .setTransactionId(cancelRequest.getTransactionId())
                 .setAmount(cancelRequest.getAmount())

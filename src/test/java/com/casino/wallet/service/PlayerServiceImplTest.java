@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PlayerServiceImplTest {
@@ -49,15 +50,14 @@ public class PlayerServiceImplTest {
     private final Player playerSix = new Player().setFirstName("Arthur").setLastName("Curry").setEmail("Arthur.C@live.com").setId(6).setCreated(Instant.now());
     private final Player playerSeven = new Player().setFirstName("Victor").setLastName("Stone").setEmail("VicSto@metropolisHS.edu").setId(7).setCreated(Instant.now());
     private final List<Player> playerList = Arrays.asList(player,
-            playerTwo,playerThree,playerFour,
-            playerFive,playerSix,playerSeven);
+            playerTwo, playerThree, playerFour,
+            playerFive, playerSix, playerSeven);
     private final Account playerAccount = new Account().setId(1).setAmount(0);
     private final Optional<Account> emptyAccount = Optional.empty();
     private final Optional<Player> emptyPlayer = Optional.empty();
 
     @Before
-    public void setUp(){
-
+    public void setUp() {
 
 
         Mockito.when(playerRepository.findAll())
@@ -106,7 +106,7 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void getAllPlayers_whenCalled_thenAListOfPlayersShouldBeReturned(){
+    public void getAllPlayers_whenCalled_thenAListOfPlayersShouldBeReturned() {
         //Given
         String expectedFirstName = player.getFirstName();
         String expectedLastName = player.getLastName();
@@ -132,7 +132,7 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void getPlayerById_whenValidId_thenPlayerShouldBeFound(){
+    public void getPlayerById_whenValidId_thenPlayerShouldBeFound() {
         //Given
         String expectedFirstName = player.getFirstName();
         String expectedLastName = player.getLastName();
@@ -154,10 +154,10 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void getPlayerById_whenInvalidId_thenExceptionShouldBeThrown(){
+    public void getPlayerById_whenInvalidId_thenExceptionShouldBeThrown() {
         //Given
         long playerId = playerSeven.getId();
-        String expectedMessage = "Player with id "+ playerId +" was not found.";
+        String expectedMessage = "Player with id " + playerId + " was not found.";
 
 
         //When
@@ -169,7 +169,7 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void registerPlayer_whenNewPlayerIsRegistered_thenShouldReturnNewPlayer(){
+    public void registerPlayer_whenNewPlayerIsRegistered_thenShouldReturnNewPlayer() {
         //Given
         PlayerDto newPlayer = new PlayerDto()
                 .setEmail(player.getEmail())
@@ -192,13 +192,13 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void registerPlayer_whenEmailIsAlreadyInUse_thenShouldThrowException(){
+    public void registerPlayer_whenEmailIsAlreadyInUse_thenShouldThrowException() {
         //Given
         PlayerDto newPlayer = new PlayerDto()
                 .setEmail(playerTwo.getEmail())
                 .setFirstName(playerTwo.getFirstName())
                 .setLastName(playerTwo.getLastName());
-        String expectedMessage = "A player with the email address "+newPlayer.getEmail()+" already exists.";
+        String expectedMessage = "A player with the email address " + newPlayer.getEmail() + " already exists.";
 
 
         //When
@@ -211,7 +211,7 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void updatePlayer_whenPlayerIsCorrectlyUpdated_thenShouldReturnUpdatedPlayer(){
+    public void updatePlayer_whenPlayerIsCorrectlyUpdated_thenShouldReturnUpdatedPlayer() {
         //Given
         PlayerDto playerDto = new PlayerDto()
                 .setId(player.getId())
@@ -235,8 +235,9 @@ public class PlayerServiceImplTest {
         assertThat(updatedPlayer.getLastName())
                 .isEqualTo(player.getLastName());
     }
+
     @Test
-    public void updatePlayer_whenNewEmailIsNotChanged_thenShouldReturnUpdatedPlayer(){
+    public void updatePlayer_whenNewEmailIsNotChanged_thenShouldReturnUpdatedPlayer() {
         //Given
         PlayerDto playerDto = new PlayerDto()
                 .setId(playerTwo.getId())
@@ -259,8 +260,9 @@ public class PlayerServiceImplTest {
         assertThat(updatedPlayer.getLastName())
                 .isEqualTo(playerTwo.getLastName());
     }
+
     @Test
-    public void updatePlayer_whenPlayerDoesntExist_thenShouldThrowException(){
+    public void updatePlayer_whenPlayerDoesntExist_thenShouldThrowException() {
         //Given
         PlayerDto playerDto = new PlayerDto()
                 .setId(playerSeven.getId())
@@ -276,8 +278,9 @@ public class PlayerServiceImplTest {
         //Then
         assertTrue(actualMessage.contains(expectedMessage));
     }
+
     @Test
-    public void updatePlayer_whenNewEmailIsAlreadyInUse_thenShouldThrowException(){
+    public void updatePlayer_whenNewEmailIsAlreadyInUse_thenShouldThrowException() {
         //Given
         PlayerDto playerDto = new PlayerDto()
                 .setId(playerTwo.getId())
@@ -296,7 +299,7 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void deletePlayer_whenPlayerIsDeleted_thenDeletedPlayerShouldBeReturned(){
+    public void deletePlayer_whenPlayerIsDeleted_thenDeletedPlayerShouldBeReturned() {
         //Given
         long playerId = playerFour.getId();
 
@@ -311,7 +314,7 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void deletePlayer_whenPlayerDoesntExist_thenShouldThrowException(){
+    public void deletePlayer_whenPlayerDoesntExist_thenShouldThrowException() {
         //Given
         long playerId = playerSeven.getId();
         String expectedMessage = "Player with id " + playerId + " was not found.";
@@ -325,7 +328,7 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void deletePlayer_whenPlayerDoesNotGetDeleted_thenShouldThrowException(){
+    public void deletePlayer_whenPlayerDoesNotGetDeleted_thenShouldThrowException() {
         //Given
         long playerId = playerFive.getId();
         String expectedMessage = "There was an issue deleting player with id " + playerId + ".";
@@ -339,10 +342,10 @@ public class PlayerServiceImplTest {
     }
 
     @Test
-    public void deletePlayer_whenAccountDoesNotGetDeleted_thenShouldThrowException(){
+    public void deletePlayer_whenAccountDoesNotGetDeleted_thenShouldThrowException() {
         //Given
         long playerId = playerSix.getId();
-        String expectedMessage = "There was an issue deleting account with id "+ playerId + ".";
+        String expectedMessage = "There was an issue deleting account with id " + playerId + ".";
 
         //When
         Exception exception = assertThrows(WalletException.InternalException.class, () -> playerService.deletePlayer(playerId));
