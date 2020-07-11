@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.casino.wallet.exception.EntityType.ACCOUNT;
 import static com.casino.wallet.exception.EntityType.PLAYER;
 import static com.casino.wallet.exception.ExceptionType.*;
 
@@ -90,8 +91,11 @@ public class PlayerServiceImpl implements PlayerService{
             accountRepository.deleteById(id);
             Optional<Player> deletedPlayer = playerRepository.findById(id);
             Optional<Account> deletedAccount = accountRepository.findById(id);
-            if (deletedPlayer.isEmpty() && deletedAccount.isEmpty()) {
-                return PlayerMapper.toPlayerDto(player.get());
+            if (deletedPlayer.isEmpty()) {
+                if(deletedAccount.isEmpty()){
+                    return PlayerMapper.toPlayerDto(player.get());
+                }
+                throw exception(ACCOUNT, INTERNAL_EXCEPTION,"There was an issue deleting account with id "+id.toString());
             }
             throw exception(PLAYER, INTERNAL_EXCEPTION,"There was an issue deleting player with id "+id.toString());
         }
