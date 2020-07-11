@@ -22,5 +22,6 @@ public class UpdatePlayerRequest {
     @NotEmpty(message = "Last name cannot be empty.")
     private String lastName;
     @Email(message = "Email must be valid.")
+    @NotEmpty(message = "Email cannot be empty.")
     private String email;
 }

@@ -18,7 +18,7 @@ import javax.validation.constraints.Positive;
 @Valid
 public class WithdrawRequest {
 
-    @NotNull(message = "TramnsactionId cannot be null.")
+    @NotNull(message = "TransactionId cannot be null.")
     private Long transactionId;
 
     @NotNull(message = "RoundId cannot be null.")

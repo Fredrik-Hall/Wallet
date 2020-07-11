@@ -35,10 +35,9 @@ public class AccountControllerTest {
     @MockBean
     private AccountService accountService;
 
-    private final String authUsername = "walletuser";
-    private final String authPassword = "password123";
-    private final HttpHeaders authHeader = createHeaders(authUsername,authPassword);
+    private final HttpHeaders authHeader = createHeaders();
 
+    //GetAccount
     @Test
     public void GetAccount_whenCalledCorrectly_thenShouldReturnOK() throws Exception {
         //Given
@@ -57,7 +56,7 @@ public class AccountControllerTest {
     }
 
     @Test
-    public void GetAccount_whenCalledWithoutAuthheader_thenShouldReturnUnauthorized() throws Exception {
+    public void GetAccount_whenCalledWithoutAuthenticationHeader_thenShouldReturnUnauthorized() throws Exception {
         //Given
         long playerId = 1;
         AccountDto accountDto = new AccountDto().setId(playerId).setAmount(10.0);
@@ -70,6 +69,7 @@ public class AccountControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    //UpdateAccount
     @Test
     public void UpdateAccount_whenCalledCorrectly_thenShouldReturnOK() throws Exception {
         //Given
@@ -156,9 +156,9 @@ public class AccountControllerTest {
     }
 
 
-    HttpHeaders createHeaders(String username, String password){
+    HttpHeaders createHeaders(){
         return new HttpHeaders() {{
-            String auth = username + ":" + password;
+            String auth = "walletuser" + ":" + "password123";
             byte[] encodedAuth = Base64.encodeBase64(
                     auth.getBytes(StandardCharsets.US_ASCII) );
             String authHeader = "Basic " + new String( encodedAuth );
