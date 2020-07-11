@@ -32,26 +32,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 public class PlayerServiceImplTest {
 
-    @TestConfiguration
-    static class PlayerServiceImplTestContextConfiguration{
-
-        @Bean(name="mockPlayerService")
-        @Primary
-        public PlayerService playerService(){
-            return new PlayerServiceImpl();
-        }
-
-        @Bean(name="mockWalletException")
-        public WalletException walletException(){
-            return new WalletException(exceptionConfig());
-        }
-
-        @Bean(name="mockExceptionConfig")
-        public ExceptionConfig exceptionConfig(){
-            return Mockito.mock(ExceptionConfig.class);
-        }
-    }
-
     @Autowired
     private PlayerService playerService;
 

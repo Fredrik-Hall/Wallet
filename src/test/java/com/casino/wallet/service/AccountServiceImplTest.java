@@ -31,26 +31,6 @@ import static org.mockito.ArgumentMatchers.any;
 @SpringBootTest
 public class AccountServiceImplTest {
 
-    @TestConfiguration
-    static class AccountServiceImplTestContextConfiguration{
-
-        @Bean(name="mockAccountService")
-        @Primary
-        public AccountService accountService(){
-            return new AccountServiceImpl();
-        }
-
-        @Bean(name="mockWalletException")
-        public WalletException walletException(){
-            return new WalletException(exceptionConfig());
-        }
-
-        @Bean(name="mockExceptionConfig")
-        public ExceptionConfig exceptionConfig(){
-            return Mockito.mock(ExceptionConfig.class);
-        }
-    }
-
     @Autowired
     private AccountService accountService;
 
