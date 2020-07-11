@@ -1,5 +1,6 @@
 package com.casino.wallet.service;
 
+import com.casino.wallet.WalletApplication;
 import com.casino.wallet.config.ExceptionConfig;
 import com.casino.wallet.dto.model.AccountDto;
 import com.casino.wallet.exception.WalletException;
@@ -10,10 +11,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
@@ -23,28 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
+
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class AccountServiceImplTest {
-
-    @TestConfiguration
-    static class AccountServiceImplTestContextConfiguration{
-
-        @Bean(name="mockAccountService")
-        @Primary
-        public AccountService accountService(){
-            return new AccountServiceImpl();
-        }
-
-        @Bean(name="mockWalletException")
-        public WalletException walletException(){
-            return new WalletException(exceptionConfig());
-        }
-
-        @Bean(name="mockExceptionConfig")
-        public ExceptionConfig exceptionConfig(){
-            return Mockito.mock(ExceptionConfig.class);
-        }
-    }
 
     @Autowired
     private AccountService accountService;

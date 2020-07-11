@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -28,27 +29,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class PlayerServiceImplTest {
-
-    @TestConfiguration
-    static class PlayerServiceImplTestContextConfiguration{
-
-        @Bean(name="mockPlayerService")
-        @Primary
-        public PlayerService playerService(){
-            return new PlayerServiceImpl();
-        }
-
-        @Bean(name="mockWalletException")
-        public WalletException walletException(){
-            return new WalletException(exceptionConfig());
-        }
-
-        @Bean(name="mockExceptionConfig")
-        public ExceptionConfig exceptionConfig(){
-            return Mockito.mock(ExceptionConfig.class);
-        }
-    }
 
     @Autowired
     private PlayerService playerService;

@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -29,27 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class TransactionServiceImplTest {
-
-    @TestConfiguration
-    static class PlayerServiceImplTestContextConfiguration{
-
-        @Bean(name="mockTransactionService")
-        @Primary
-        public TransactionService playerService(){
-            return new TransactionServiceImpl();
-        }
-
-        @Bean(name="mockWalletException")
-        public WalletException walletException(){
-            return new WalletException(exceptionConfig());
-        }
-
-        @Bean(name="mockExceptionConfig")
-        public ExceptionConfig exceptionConfig(){
-            return Mockito.mock(ExceptionConfig.class);
-        }
-    }
 
     @Autowired
     private TransactionService transactionService;
